@@ -87,7 +87,7 @@ sigin = api.model('Sigin', {
 @jwt.authentication_handler
 def authenticate(username, password):
     if username == 'cpi' and password == 'unq':
-        return User(id=1, username='cpi')
+        return User(id=1, username=username)
 
 @jwt.user_handler
 def load_user(payload):
