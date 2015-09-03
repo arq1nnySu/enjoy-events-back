@@ -116,7 +116,9 @@ def add_cors_headers(response):
     return response
 
 
+# Chequeando que todo ande bien
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+   print "Haciendo prueba para ver si funciona la integracion con pivotal :)" 
