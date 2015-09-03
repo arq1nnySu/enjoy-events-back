@@ -1,0 +1,2 @@
+flask-restplus==0.7.2
+Flask-JWT==0.2.0

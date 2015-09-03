@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_jwt import JWT, jwt_required
+from flask_jwt import JWT, jwt_required, _jwt
 from flask.ext.restplus import Api, Resource, fields
 
 app = Flask(__name__)
@@ -14,11 +14,22 @@ api = Api(app, version='1.0', title='API',
 
 ns = api.namespace('events', description='Servicios para eventos')
 
+class User(object):
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
 EVENTS = {
-        "1":{'id': "1", 'name': 'Choripateada'},
-        "2":{'id': "2", 'name': 'WISIT'},
-        "3":{'id': "3", 'name': 'Lollapalooza'},
+    "1":{'id': "1", 'name': 'Choripateada'},
+    "2":{'id': "2", 'name': 'WISIT'},
+    "3":{'id': "3", 'name': 'Lollapalooza'},
 }
+
+
+USERS = [
+    User(id=1, username='cpi', password="unq")
+]
+
 
 event = api.model('Event', {
     'id': fields.String(required=False, description='Id of event'),
@@ -70,24 +81,44 @@ class EventListService(Resource):
         return EVENTS[event_id], 201
 
 
-
-class User(object):
-    def __init__(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-
 us = api.namespace('user', description='Servicios para usuario')
 
-sigin = api.model('Sigin', {
-    'username': fields.String(required=False, description='username'),
-    'token': fields.String(required=True, description='token')
+signup = api.model('Signup', {
+    'username': fields.String(required=True, description='username'),
+    'password': fields.String(required=True, description='password')
 })
+
+user_parser = api.parser()
+user_parser.add_argument('username', type=str, required=True, help='El nombre del usuario', location='form')
+user_parser.add_argument('password', type=str, required=True, help='La password', location='form')
+
+@us.route('/')
+class UserService(Resource):
+    @api.marshal_list_with(events)
+    @jwt.user_handler
+    def get(self):
+        return next((user for user in USERS if user.username == username), None)
+
+    @api.doc(parser=user_parser)
+    def post(self):
+        args = user_parser.parse_args()
+        user_id = '%d' % (len(USERS) + 1)
+        user = User(id=user_id, username=args['username'], password=args['password'])
+        USERS.append(user)
+        return generate_token(user), 201
+
+
+def generate_token(user):
+    """Generate a token for a user.
+    """
+    payload = _jwt.payload_callback(user)
+    token = _jwt.encode_callback(payload)
+    return {'token': token}
 
 
 @jwt.authentication_handler
 def authenticate(username, password):
-    if username == 'cpi' and password == 'unq':
-        return User(id=1, username='cpi')
+    return next((user for user in USERS if user.username == username and user.password == password), None)
 
 @jwt.user_handler
 def load_user(payload):
