@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 from flask_jwt import JWT, jwt_required, _jwt
 from flask.ext.restplus import Api, Resource, fields
@@ -147,4 +148,5 @@ def add_cors_headers(response):
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
