@@ -2,12 +2,14 @@ import os
 from flask import Flask, request
 from flask_jwt import JWT, jwt_required, _jwt
 from flask.ext.restplus import Api, Resource, fields
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 
 jwt = JWT(app)
+CORS(app)
 
 api = Api(app, version='1.0', title='API',
     description='Api para el tp de arquitectura',
@@ -93,7 +95,8 @@ user_parser = api.parser()
 user_parser.add_argument('username', type=str, required=True, help='El nombre del usuario', location='form')
 user_parser.add_argument('password', type=str, required=True, help='La password', location='form')
 
-@us.route('/')
+
+@us.route('')
 class UserService(Resource):
     @api.marshal_list_with(events)
     @jwt.user_handler
@@ -132,20 +135,6 @@ def make_payload(user):
         'userId': user.id,
         'username': user.username
     }
-
-@app.after_request
-def add_cors_headers(response):
-    if 'Origin' in request.headers:
-        response.headers.add('Access-Control-Allow-Origin', request.headers.get('Origin'))
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-
-        if 'Access-Control-Request-Methods' in request.headers:
-            response.headers.add('Access-Control-Allow-Methods', request.headers.get('Access-Control-Request-Methods'))
-
-        if 'Access-Control-Request-Headers' in request.headers:
-            response.headers.add('Access-Control-Allow-Headers', request.headers.get('Access-Control-Request-Headers'))
-
-    return response
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
