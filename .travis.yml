@@ -1,0 +1,9 @@
+language: python
+install: pip install -r requirements.txt
+deploy:
+  provider: heroku
+  api_key:
+    secure: kXKfwaYkwTbNa7pJ/Iv9u7EArE9wcC997Js/V1n8M+e/l1iQvZzWfOnPp7HW9t+mulH5ejxjLDz1Sbz1KebO4AMeGsMCkDYjsUbQGw7cUgxwdDEVjsUM0AZtQEUSi1AWt0/Fmj8w/vlZpa4BpzToLWT1eaDGk5PtxIbD3IiXENFqJahYUEzFN9kRrsDOuadqnGhyPvFjY2/2E0GRJpPC9S9SejXsw5qZ4AIE/wqL4MR/q0aRAe6C9X36ftWAoPN95l6+W5VlzyosGFLDtEzL865qjhE/NIzSaASXySLIScSfZH6YpMhunK8OYm9oq65onnrNOe+XpKbXLUKloMq3JaUk6PVMCMPZO9K2VqDxAQj5TDowrTB5Mg7jVeNNnsdJUr9kWIFJ/XI8GEzMddYK1auRbatDmb2VH9OPalpQZQNMeHkNtDw6YAr5Z/CZWOHzv7TDYkqIOdZzJqYVPcxs/KNzvdn9aP3AV4SgnwqOna6PV9puzpSwY1PIxVEQEUk8mwjrMT1e0S6y/9g8DAXA329VVJtR8yI31Tx41PP8giuyYo8VlRyEYh6rj5fY7XWg4bIXlq4PR92SGasMSTNjEXgjHu77ifx57231+Zbpg9OW8Ybi7Ru09y8lfCLpyhBgekdwLfVFmejGiC6JMjxH4LczV+EVEBMv3ZKhVOfNDSk=
+  app: enjoy-events-portal
+  on:
+    repo: arq1nnySu/enjoy-events-back
