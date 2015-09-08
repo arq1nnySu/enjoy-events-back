@@ -1,11 +1,11 @@
-from apiRefactory import api, USERS, events, user_parser
+from api import api, USERS, events, user_parser
 from services.jwtService import jwt, generate_token
 from flask.ext.restplus import Resource
 from docs.app import UserDocument 
 
 us = api.namespace('user', description='Servicios para usuario')
 
-@us.route('/')
+@us.route('')
 class UserService(Resource):        
     @api.marshal_list_with(events)
     @jwt.user_handler

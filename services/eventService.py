@@ -1,4 +1,4 @@
-from apiRefactory import api, EVENTS, events, event, event_parser
+from api import api, EVENTS, events, event, event_parser
 from flask.ext.restplus import Resource
 
 ns = api.namespace('events', description='Servicios para eventos')

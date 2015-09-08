@@ -1,5 +1,5 @@
 from flask_jwt import JWT, jwt_required, _jwt
-from apiRefactory import app, USERS
+from api import app, USERS
 
 jwt = JWT(app)
 
