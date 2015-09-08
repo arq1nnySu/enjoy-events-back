@@ -7,3 +7,4 @@ deploy:
   app: enjoy-events-portal
   on:
     repo: arq1nnySu/enjoy-events-back
+script: nosetests
