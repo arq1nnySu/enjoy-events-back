@@ -9,11 +9,11 @@ app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 
+CORS(app)
+
 api = Api(app, version='1.0', title='API',
     description='Api para el tp de arquitectura',
 )
-
-CORS(app)
 
 EVENTS = {
     "1":{'id': "1", 'name': 'Choripateada'},
@@ -36,6 +36,6 @@ USERS = [
 
 ud = UserDocument(api)
 
-user_parser = ud.parser 
+user_parser = ud.parser
 
 signup = ud.signup
