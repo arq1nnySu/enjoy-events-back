@@ -2,6 +2,7 @@ from api import api, USERS, events, user_parser
 from services.jwtService import jwt, generate_token
 from flask.ext.restplus import Resource
 from docs.app import UserDocument 
+from model.user import User
 
 us = api.namespace('user', description='Servicios para usuario')
 
