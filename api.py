@@ -3,6 +3,7 @@ from flask import Flask
 from flask.ext.restplus import Api
 from flask_cors import CORS
 from model.user import User
+from model.event import Event
 from docs.app import UserDocument, EventDocument
 
 app = Flask(__name__)
@@ -16,9 +17,9 @@ api = Api(app, version='1.0', title='API',
 )
 
 EVENTS = {
-    "1":{'id': "1", 'name': 'Choripateada'},
-    "2":{'id': "2", 'name': 'WISIT'},
-    "3":{'id': "3", 'name': 'Lollapalooza'},
+    "1": Event({'id': "1", 'name': 'Choripateada'}),
+    "2":Event({'id': "2", 'name': 'WISIT'}),
+    "3":Event({'id': "3", 'name': 'Lollapalooza'}),
 }
 
 ed = EventDocument(api)
