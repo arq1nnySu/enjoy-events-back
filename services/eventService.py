@@ -1,5 +1,6 @@
 from api import api, EVENTS, events, event, event_parser
 from flask.ext.restplus import Resource
+from model.event import Event
 
 ns = api.namespace('events', description='Servicios para eventos')
 
@@ -31,9 +32,10 @@ class EventListService(Resource):
     @api.marshal_with(event, code=201)
     def post(self):
         args = event_parser.parse_args()
-        event_id = '%d' % (len(EVENTS) + 1)
-        EVENTS[event_id] = {'name': args['name'], "id":event_id}
-        return EVENTS[event_id], 201
+        args["id"] = '%d' % (len(EVENTS) + 1)
+        newEvent = Event(args)
+        EVENTS[args['id']] = newEvent
+        return newEvent, 201
 
 def abort_if_event_doesnt_exist(event_id):
     if event_id not in EVENTS:
