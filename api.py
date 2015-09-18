@@ -1,15 +1,20 @@
 import os
+
 from flask import Flask
 from flask.ext.restplus import Api, RestException
 from flask_cors import CORS
-from model.user import User
-from model.event import Event
+from flask.ext.mongoalchemy import MongoAlchemy
+
 from docs.app import UserDocument, EventDocument
 
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['RESTPLUS_VALIDATE'] = True
+
+app.config['MONGOALCHEMY_DATABASE'] = 'enjoy-events'
+app.config['MONGOALCHEMY_CONNECTION_STRING'] = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
+db = MongoAlchemy(app)
 
 CORS(app)
 
@@ -37,11 +42,7 @@ api = Api(app, version='1.0', title='API',
 def handle_custom_exception(error):
     return {'message': 'What you want'}, 400
 
-EVENTS = {
-    "1": Event({'id': "1", 'name': 'Choripateada'}),
-    "2":Event({'id': "2", 'name': 'WISIT'}),
-    "3":Event({'id': "3", 'name': 'Lollapalooza'}),
-}
+EVENTS = {}
 
 ed = EventDocument(api)
 
@@ -50,11 +51,6 @@ event = ed.event
 events = ed.events
 
 event_parser = ed.parser
-
-
-USERS = [
-    User(id=1, username='cpi', password="unq")
-]
 
 ud = UserDocument(api)
 

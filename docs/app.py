@@ -1,6 +1,7 @@
 from flask.ext.restplus import fields 
-#from flask_restful.reqparse import RequestParser
 from flask.ext.restful.reqparse import RequestParser
+from flask.ext.restplus import fields
+>>>>>>> add mongo support on User [#103566486]
 
 # Documentacion de los eventos
 class EventDocument(object):
@@ -13,12 +14,12 @@ class EventDocument(object):
 
 	def create_event(self):
 		event = self.api.model('Event', {
-			'id': fields.String(required=False, description='Id'),
-			'name': fields.String(required=True, description='Name'),
-			'date': fields.String(required=True, description='Date'), # Cambiar el type por lo que corresponde.
-			'time': fields.String(required=False, description='Time'), 
-			'venue': fields.String(required=True, description='Venue'),
-			'description': fields.String(required=False, description='Description')
+			'id': fields.String(required=False, description='Id of event'),
+			'name': fields.String(required=True, description='Name of event'),
+			'date': fields.String(required=True, description='Date of event'), # Cambiar el type por lo que corresponde.
+			'time': fields.String(required=True, description='Time of event'),
+			'venue': fields.String(required=True, description='Venue of event'),
+			'description': fields.String(required=True, description='Description of event')
 			})
 		return event
 
