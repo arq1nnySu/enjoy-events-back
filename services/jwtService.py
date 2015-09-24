@@ -1,23 +1,28 @@
-from flask_jwt import JWT, jwt_required, _jwt
-from api import app, USERS, User
+from flask_jwt import JWT, _jwt
+
+from api import app
+from model.user import User
 
 jwt = JWT(app)
 
+
 @jwt.authentication_handler
 def authenticate(username, password):
-    return next((user for user in USERS if user.username == username and user.password == password), None)
+    return User.query.get_by_name_and_password(username, password).first()
+
 
 @jwt.user_handler
 def load_user(payload):
     if payload['user_id'] == 1:
-        return User(id=1, username='cpi')
+        return User(username='cpi')
+
 
 @jwt.payload_handler
 def make_payload(user):
     return {
-        'userId': user.id,
         'username': user.username
     }
+
 
 def generate_token(user):
     """Generate a token for a user.
