@@ -30,8 +30,10 @@ class EventListService(Resource):
     @api.doc(parser=event_parser)
     # @jwt_required()
     @api.marshal_with(event, code=201)
+    @api.response(400, 'Validation Error')
     def post(self):
         args = event_parser.parse_args()
+        parser_to_params
         args["id"] = '%d' % (len(EVENTS) + 1)
         newEvent = Event(args)
         EVENTS[args['id']] = newEvent
@@ -40,4 +42,6 @@ class EventListService(Resource):
 def abort_if_event_doesnt_exist(event_id):
     if event_id not in EVENTS:
         api.abort(404, "Event {} doesn't exist".format(event_id))
+
+
 
