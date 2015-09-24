@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask.ext.restplus import Api, RestException
 from flask_cors import CORS
+from urlparse import urlsplit
 from flask.ext.mongoalchemy import MongoAlchemy
 from docs.app import UserDocument, EventDocument
 
@@ -10,8 +11,10 @@ app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['RESTPLUS_VALIDATE'] = True
 
-app.config['MONGOALCHEMY_DATABASE'] = 'enjoy-events'
-app.config['MONGOALCHEMY_CONNECTION_STRING'] = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
+url = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
+app.config['MONGOALCHEMY_CONNECTION_STRING'] = url
+parsed = urlsplit(url)
+app.config['MONGOALCHEMY_DATABASE'] = parsed.path[1:]
 db = MongoAlchemy(app)
 
 CORS(app)
