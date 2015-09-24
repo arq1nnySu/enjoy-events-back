@@ -2,8 +2,12 @@ from api import db
 
 
 class Event(db.Document):
-    def __init__(self, kwargs):
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+	tag = db.StringField()
+	name = db.StringField()
+	description = db.StringField()
+	venue = db.StringField()
+	time = db.StringField()
+	date = db.StringField()
+	image = db.StringField()
 
 

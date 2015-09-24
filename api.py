@@ -1,10 +1,8 @@
 import os
-
 from flask import Flask
 from flask.ext.restplus import Api, RestException
 from flask_cors import CORS
 from flask.ext.mongoalchemy import MongoAlchemy
-
 from docs.app import UserDocument, EventDocument
 
 app = Flask(__name__)
