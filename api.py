@@ -5,11 +5,13 @@ from flask_cors import CORS
 from urlparse import urlsplit
 from flask.ext.mongoalchemy import MongoAlchemy
 from docs.app import UserDocument, EventDocument
+from datetime import timedelta
 
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 app.config['RESTPLUS_VALIDATE'] = True
+app.config['JWT_EXPIRATION_DELTA'] =  timedelta(hours=12)
 
 url = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
 app.config['MONGOALCHEMY_CONNECTION_STRING'] = url

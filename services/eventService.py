@@ -1,6 +1,9 @@
 from api import api, EVENTS, events, event, event_parser
 from flask.ext.restplus import Resource
 from model.event import Event
+from model.visibility import Visibility
+from services.jwtService import *
+from flask_jwt import jwt_required
 
 ns = api.namespace('events', description='Servicios para eventos')
 
@@ -10,13 +13,13 @@ class EventService(Resource):
     @api.doc(description='')
     @api.marshal_with(event)
     def get(self, tag):
-        return Event.query.filter(Event.tag == tag).first()
+        return Event.query.get_by_tag(tag)
 
     # @jwt_required()
     @api.doc(responses={204: 'Event deleted'})
     def delete(self, event_id):
         # abort_if_event_doesnt_exist(event_id)
-        eventToDelete = Event.query.filter(Event.tag == tag).first()
+        eventToDelete = Event.query.get_by_tag(tag).first()
         eventToDelete.delete()
         return '', 204
 
@@ -24,8 +27,15 @@ class EventService(Resource):
 @api.doc(responses={401: 'Authorization Required'})
 class EventListService(Resource):            
     @api.marshal_list_with(events)
+    @jwt_optional()
     def get(self):
-        return Event.query.all()
+        if isLogged() :
+            return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
+                Event.owner == currentUser())
+                ).all()
+        else:
+            return Event.query.filter(Event.visibility == Visibility.query.public()).all()
+
 
     @api.doc(parser=event_parser)
     # @jwt_required()
