@@ -10,7 +10,7 @@ from datetime import timedelta
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
-app.config['RESTPLUS_VALIDATE'] = True
+#app.config['RESTPLUS_VALIDATE'] = True
 app.config['JWT_EXPIRATION_DELTA'] =  timedelta(hours=12)
 
 url = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
@@ -22,28 +22,28 @@ db = MongoAlchemy(app)
 CORS(app)
 
 
-errors = {
-    'SpecsError': {
-        'message': "This field can't be empty.",
-        'status': 400,
-    },
-    'ValidationError': {
-        'message': "This field can't be empty.",
-        'status': 400,
-    },
-    'RestException': {
-        'message': "This field can't be empty.",
-        'status': 400,
-    }
-}
+#errors = {
+#    'SpecsError': {
+#        'message': "This field can't be empty.",
+#        'status': 400,
+#    },
+#    'ValidationError': {
+#        'message': "This field can't be empty.",
+#        'status': 400,
+#    },
+#    'RestException': {
+#        'message': "This field can't be empty.",
+#        'status': 400,
+#    }
+#}
 
 api = Api(app, version='1.0', title='API',
-    description='Api para el tp de arquitectura',errors=errors)
+    description='Api para el tp de arquitectura')
 
 
-@api.errorhandler(Exception)
-def handle_custom_exception(error):
-    return {'message': 'What you want'}, 400
+#@api.errorhandler(Exception)
+#def handle_custom_exception(error):
+#    return {'message': 'What you want'}, 400
 
 EVENTS = {}
 
