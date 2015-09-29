@@ -14,3 +14,6 @@ class Visibility(db.Document):
 	query_class = VisibilityQuery
 	name  = db.StringField()
 
+	def isPublic(self):
+		return self.name == 'Public'
+

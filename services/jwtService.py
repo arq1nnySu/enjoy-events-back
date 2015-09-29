@@ -2,6 +2,7 @@ from flask_jwt import JWT, _jwt, current_user, JWTError, verify_jwt
 from flask import request, _request_ctx_stack
 from functools import wraps
 from api import app
+from api import api
 from model.user import User
 
 jwt = JWT(app)
@@ -12,13 +13,11 @@ def authenticate(username, password):
 
 @jwt.user_handler
 def load_user(payload):
-    return User.query.get_by_name(payload.username).first()
+    return User.query.get_by_name(payload['username']).first()
 
 @jwt.payload_handler
 def make_payload(user):
-    return {
-        'username': user.username
-    }
+    return {'username': user.username}
 
 def generate_token(user):
     """Generate a token for a user.
@@ -35,6 +34,10 @@ def jwt_optional(realm=None):
             return fn(*args, **kwargs)
         return decorator
     return wrapper
+    
+@jwt.error_handler
+def error_handler(e):
+    api.abort(401, "Authorization Required")
 
 def currentUser():
     return _request_ctx_stack.top.current_user

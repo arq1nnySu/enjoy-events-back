@@ -18,27 +18,28 @@ app.config['MONGOALCHEMY_CONNECTION_STRING'] = url
 parsed = urlsplit(url)
 app.config['MONGOALCHEMY_DATABASE'] = parsed.path[1:]
 db = MongoAlchemy(app)
+app.config['BUNDLE_ERRORS'] = True
 
 CORS(app)
 
 
-#errors = {
-#    'SpecsError': {
-#        'message': "This field can't be empty.",
-#        'status': 400,
-#    },
-#    'ValidationError': {
-#        'message': "This field can't be empty.",
-#        'status': 400,
-#    },
-#    'RestException': {
-#        'message': "This field can't be empty.",
-#        'status': 400,
-#    }
-#}
+errors = {
+   'SpecsError': {
+       'message': "This field can't be empty.",
+       'status': 401,
+   },
+   'ValidationError': {
+       'message': "This field can't be empty.",
+       'status': 402,
+   },
+   'RestException': {
+       'message': "This field can't be empty.",
+       'status': 400,
+   }
+}
 
 api = Api(app, version='1.0', title='API',
-    description='Api para el tp de arquitectura')
+    description='Api para el tp de arquitectura', errors=errors)
 
 
 #@api.errorhandler(Exception)
@@ -49,9 +50,10 @@ EVENTS = {}
 
 ed = EventDocument(api)
 
-event = ed.event
+EventDC = ed.event
+ErrorDC = ed.error
 
-events = ed.events
+EventsDC = ed.events
 
 event_parser = ed.parser
 
@@ -60,3 +62,4 @@ ud = UserDocument(api)
 user_parser = ud.parser
 
 signup = ud.signup
+

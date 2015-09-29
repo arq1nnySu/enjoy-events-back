@@ -8,8 +8,11 @@ import services.eventService
 
 
 def development():
-	user = User(username='cpi', password='unq')
-	user.save()
+	cpi = User(username='cpi', password='unq')
+	cpi.save()
+
+	arq1 = User(username='arq1', password='lds')
+	arq1.save()
 
 	public = Visibility(name='Public')
 	public.save()
@@ -26,8 +29,9 @@ def development():
 	    tag= 'LollaAR',
 	    time= '10:00',
 	    venue= 'Hipodromo de san isidro',
-		owner = user,
-		visibility = public
+		owner = cpi,
+		visibility = public,
+		gests = []
 	)
 
 	event.save()
@@ -40,8 +44,9 @@ def development():
 	    tag= 'chori_2015',
 	    time= '10:00',
 	    venue= 'Universidad Nacional de Quilmes (UNQ)',
-		owner = user,
-		visibility = private
+		owner = cpi,
+		visibility = private,
+		gests = [arq1]
 	)
 
 	event2.save()
