@@ -9,6 +9,7 @@ class EventDocument(object):
 		self.event = self.create_event()
 		self.events = self.create_events()
 		self.parser = self.create_parser()
+		self.error = self.create_error()
 
 	def create_event(self):
 		event = self.api.model('Event', {
@@ -25,6 +26,12 @@ class EventDocument(object):
 	def create_events(self):
 		events = self.api.model('ListedTodo', self.event)
 		return events
+
+	def create_error(self):
+		error = self.api.model('Error', {
+			'message': fields.String(required=False)
+		})
+		return error
 
 	def create_parser(self):
 		parser = RequestParser(bundle_errors=True)
