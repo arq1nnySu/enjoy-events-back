@@ -42,6 +42,7 @@ class EventDocument(object):
 		parser.add_argument('venue', type=str, required=True, help='Venue needs to be defined', location='form')
 		parser.add_argument('image', type=str, required=True, help='Image needs to be defined', location='form')
 		parser.add_argument('description', type=str, required=False, help='Description of event', location='form')
+		parser.add_argument('visibility', type=str, required=True, help='Visibility of event', location='form')
 		return parser
 
 #Documentacion de los usuarios

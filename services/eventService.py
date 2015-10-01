@@ -55,6 +55,7 @@ class EventListService(Resource):
             date = args.date,
             image = args.image,
             gests = [],
+            visibility = Visibility.query.get(args.visibility),
             owner = currentUser()
         )
         newEvent.save()
