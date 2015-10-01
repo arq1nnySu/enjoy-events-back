@@ -4,10 +4,13 @@ from flask.ext.mongoalchemy import BaseQuery
 
 class VisibilityQuery(BaseQuery):
 	def public(self):
-		return self.filter(self.type.name == 'Public').first()
+		return self.get('Public')
 
 	def private(self):
-		return self.filter(self.type.name == 'Private').first()
+		return self.get('Private')
+
+	def get(self, name):
+		return self.filter(self.type.name == name).first()
 
 
 class Visibility(db.Document):
