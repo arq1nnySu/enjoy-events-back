@@ -2,4 +2,5 @@ flask-restplus==0.7.2
 Flask-JWT==0.2.0
 Flask-Cors==2.1.0
 Flask-MongoAlchemy==0.7.2
+loggly-python-handler==1.0.0
 newrelic
