@@ -63,3 +63,10 @@ user_parser = ud.parser
 
 signup = ud.signup
 
+
+from bootstrap import development
+
+@app.route('/bootstrap')
+def bootstrap():
+  development()
+  return 'OK'

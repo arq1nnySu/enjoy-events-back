@@ -1,13 +1,16 @@
-from api import app, EVENTS
 from model.event import Event
 from model.user import User
 from model.visibility import Visibility
-import services.userService
-import services.eventService
 
 
+def remove(object):
+	object.remove()
 
 def development():
+	map(remove, User.query.all())
+	map(remove, Visibility.query.all())
+	map(remove, Event.query.all())
+
 	cpi = User(username='cpi', password='unq')
 	cpi.save()
 
