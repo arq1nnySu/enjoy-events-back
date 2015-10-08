@@ -13,7 +13,7 @@ def authenticate(username, password):
 
 @jwt.user_handler
 def load_user(payload):
-    logger.info("Cargar Usuario: {'username':'%s'}" % payload['username'])
+    log.info("Cargar Usuario: {'username':'%s'}" % payload['username'])
     return User.query.get_by_name(payload['username']).first()
 
 @jwt.payload_handler
