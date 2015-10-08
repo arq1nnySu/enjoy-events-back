@@ -4,15 +4,20 @@ from functools import wraps
 from api import app
 from api import api
 from model.user import User
+from log.logger import getLogger
+
+log = getLogger()
 
 jwt = JWT(app)
 
 @jwt.authentication_handler
 def authenticate(username, password):
+    log.info("Autenticar Usuario: {'username':'%s'}" % username)
     return User.query.get_by_name_and_password(username, password).first()
 
 @jwt.user_handler
 def load_user(payload):
+    logger.info("Cargar Usuario: {'username':'%s'}" % payload['username'])
     return User.query.get_by_name(payload['username']).first()
 
 @jwt.payload_handler
@@ -20,8 +25,7 @@ def make_payload(user):
     return {'username': user.username}
 
 def generate_token(user):
-    """Generate a token for a user.
-    """
+    log.info("Generar Token para un Usuario: {'user':'%s'}" % user)
     payload = _jwt.payload_callback(user)
     token = _jwt.encode_callback(payload)
     return {'token': token}

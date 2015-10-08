@@ -3,9 +3,11 @@ from flask.ext.restplus import Resource
 from api import api, signup, user_parser
 from services.jwtService import jwt, generate_token
 from model.user import User
+from log.logger import getLogger
+
+log = getLogger()
 
 us = api.namespace('user', description='Servicios para usuario')
-
 
 @us.route('')
 class UserService(Resource):        
@@ -19,6 +21,8 @@ class UserService(Resource):
         args = user_parser.parse_args()
         user = User(username=args['username'], password=args['password'])
         user.save()
+        log.info("Crea nuevo usuario: {'username':'%s'}" % user.username)
+
         return generate_token(user), 201
 
 
