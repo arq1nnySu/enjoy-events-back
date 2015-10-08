@@ -10,6 +10,7 @@ class VisibilityQuery(BaseQuery):
 		return self.get('Private')
 
 	def get(self, name):
+		log.info("Busca la Visibilidad: %s de un Evento." % name)
 		return self.filter(self.type.name == name).first()
 
 
