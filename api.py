@@ -6,6 +6,8 @@ from urlparse import urlsplit
 from flask.ext.mongoalchemy import MongoAlchemy
 from docs.app import UserDocument, EventDocument
 from datetime import timedelta
+from log.logger import getLogger
+log = getLogger()
 
 app = Flask(__name__)
 app.debug = True
@@ -67,9 +69,9 @@ user_parser = ud.parser
 signup = ud.signup
 
 
-from bootstrap import development
 
 @app.route('/bootstrap')
 def bootstrap():
+  from bootstrap import development
   development()
   return 'OK'

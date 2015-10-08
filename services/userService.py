@@ -1,10 +1,7 @@
 from flask.ext.restplus import Resource
-
-from api import api, signup, user_parser
+from api import api, signup, user_parser, log
 from services.jwtService import jwt, generate_token
 from model.user import User
-from log.logger import getLogger
-log = getLogger()
 
 us = api.namespace('user', description='Servicios para usuario')
 

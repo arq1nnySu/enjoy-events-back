@@ -1,11 +1,8 @@
 from flask_jwt import JWT, _jwt, current_user, JWTError, verify_jwt
 from flask import request, _request_ctx_stack
 from functools import wraps
-from api import app
-from api import api
+from api import app, api, log
 from model.user import User
-from log.logger import getLogger
-log = getLogger()
 
 jwt = JWT(app)
 

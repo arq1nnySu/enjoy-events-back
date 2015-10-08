@@ -1,4 +1,4 @@
-from api import db
+from api import db, log
 from flask.ext.mongoalchemy import BaseQuery
 
 

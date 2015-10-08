@@ -1,12 +1,9 @@
-from api import api, EVENTS, EventsDC, EventDC, ErrorDC, event_parser
+from api import api, EVENTS, EventsDC, EventDC, ErrorDC, event_parser, log
 from flask.ext.restplus import Resource
 from model.event import Event
 from model.visibility import Visibility
 from services.jwtService import *
 from flask_jwt import jwt_required
-from log.logger import getLogger
-
-log = getLogger()
 
 ns = api.namespace('events', description='Servicios para eventos')
 

@@ -1,16 +1,12 @@
 from model.event import Event
 from model.user import User
 from model.visibility import Visibility
-from log.logger import getLogger
-log = getLogger()
 
 
 def remove(object):
 	object.remove()
 
 def development():
-	log.info("Generar Datos por Defecto en la BD.")
-	
 	map(remove, User.query.all())
 	map(remove, Visibility.query.all())
 	map(remove, Event.query.all())

@@ -1,9 +1,8 @@
-from api import db
+from api import db, log
 from user import User
 from visibility import Visibility
 from flask.ext.mongoalchemy import BaseQuery
-from log.logger import getLogger
-log = getLogger()
+
 
 class EventQuery(BaseQuery):
 
