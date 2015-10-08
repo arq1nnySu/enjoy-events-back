@@ -21,7 +21,4 @@ class UserService(Resource):
         user = User(username=args['username'], password=args['password'])
         user.save()
         log.info("Crea nuevo Usuario: {'username':'%s'}" % user.username)
-
         return generate_token(user), 201
-
-
