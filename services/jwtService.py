@@ -5,7 +5,6 @@ from api import app
 from api import api
 from model.user import User
 from log.logger import getLogger
-
 log = getLogger()
 
 jwt = JWT(app)

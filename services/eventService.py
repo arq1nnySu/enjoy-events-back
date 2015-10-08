@@ -16,17 +16,18 @@ class EventService(Resource):
     @api.marshal_with(EventDC)
     @jwt_optional()
     def get(self, tag):
-        log.info("Devuelve un evento con: {'tag':'%s'}" % tag)
+        log.info("Otorga el Evento con: {'tag':'%s'}" % tag)
         event = Event.query.get_by_tag(tag)
         if event.hasAccess(currentUser()) :
             return event
         else:
+            log.warning("Se requiere Autorizacion para este recurso.")
             api.abort(401, "Authorization Required")
 
     @jwt_required()
     @api.doc(responses={204: 'Event deleted'})
     def delete(self, tag):
-        log.info("Elimina un evento con: {'tag':'%s'}" % tag)
+        log.info("Elimina un Evento con: {'tag':'%s'}" % tag)
         eventToDelete = Event.query.get_by_tag(tag)
         eventToDelete.delete()
         return '', 204
@@ -37,14 +38,13 @@ class EventListService(Resource):
     @api.marshal_list_with(EventsDC)
     @jwt_optional()
     def get(self):
-        log.info("Devuelve todos los eventos con filtrado.")        
+        log.info("Lista los Eventos. En estado Publico o Privado.")        
         if isLogged() :
             return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
                 Event.owner == currentUser()).or_(Event.gests.in_(currentUser()))
                 ).all()
         else:
             return Event.query.filter(Event.visibility == Visibility.query.public()).all()
-
 
     @api.doc(parser=event_parser)
     @jwt_required()
@@ -64,7 +64,5 @@ class EventListService(Resource):
             owner = currentUser()
         )
         newEvent.save()
-        log.info("Crea un nuevo evento con: {'tag':'%s'}" % newEvent.tag)
+        log.info("Crea un Evento con: {'tag':'%s'}" % newEvent.tag)
         return newEvent, 201
-
-

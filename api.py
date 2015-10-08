@@ -9,16 +9,19 @@ from datetime import timedelta
 
 app = Flask(__name__)
 app.debug = True
+# Configuracion de app.
 app.config['SECRET_KEY'] = 'super-secret'
 #app.config['RESTPLUS_VALIDATE'] = True
 app.config['JWT_EXPIRATION_DELTA'] =  timedelta(hours=12)
+app.config['BUNDLE_ERRORS'] = True
 
+# Configuracion de MongoDB.
 url = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
 app.config['MONGOALCHEMY_CONNECTION_STRING'] = url
 parsed = urlsplit(url)
 app.config['MONGOALCHEMY_DATABASE'] = parsed.path[1:]
 db = MongoAlchemy(app)
-app.config['BUNDLE_ERRORS'] = True
+
 
 CORS(app)
 
