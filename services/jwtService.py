@@ -11,7 +11,7 @@ jwt = JWT(app)
 def authenticate(username, password):
     log.info("Autenticar Usuario: {'username':'%s'}" % username)
     db_user = User.query.get_by_name(username).first()
-    if db_user.check_password(password):
+    if db_user is not None and db_user.check_password(password):
         return db_user
     return None
 

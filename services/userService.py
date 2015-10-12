@@ -16,6 +16,10 @@ class UserService(Resource):
     def post(self):
         args = user_parser.parse_args()
         user = User(username=args['username'], password=args['password'])
+        # TODO mejorar la forma de generar el hash.
+        #  sobreescribiendo el constructor falla al validar el password.
+        #  no pude sobreescribir el save...
+        user.generate_hashed_password()
         user.save()
         log.info("Crea nuevo Usuario: {'username':'%s'}" % user.username)
         return generate_token(user), 201
