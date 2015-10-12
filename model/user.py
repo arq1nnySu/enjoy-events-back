@@ -20,8 +20,10 @@ class User(db.Document):
 
     def __init__(self, **kwargs):
         log.info('Creando un nuevo usuario con password = hash + salt')
-        # kwargs.update({'password': self.get_password(kwargs.pop('password'))})
-        super(db.Document, self).__init__(None, False, kwargs)
+        kwargs.update({'password': self.get_password(kwargs.pop('password'))})
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+        super(db.Document, self).__init__(kwargs)
 
     @staticmethod
     def get_password(password):
