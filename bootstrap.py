@@ -1,5 +1,6 @@
 from model.event import Event
 from model.user import User
+from model.assistance import Assistance
 from model.visibility import Visibility
 
 
@@ -10,6 +11,7 @@ def remove(object):
 def development():
     map(remove, User.query.all())
     map(remove, Visibility.query.all())
+    map(remove, Assistance.query.all())
     map(remove, Event.query.all())
 
     cpi = User(username='cpi', password='unq')
@@ -36,10 +38,27 @@ def development():
         venue='Hipodromo de san isidro',
         owner=cpi,
         visibility=public,
-        gests=[]
+        gests=[],
+        requirements = [('a',7),('b',5)],
+        capacity = 10
     )
 
     event.save()
+
+    assistance1 = Assistance(
+        event = event.tag,
+        user = cpi,
+        requirement = [('b',3),('a',1)]
+        )
+
+    assistance1.save()
+
+    assistance2 = Assistance(
+        event = event.tag,
+        user = arq1,
+        requirement = [('a',2),('b',1)]
+        )
+    assistance2.save()
 
     event2 = Event(
         date='Thu Sep 24 2015 17=24=10 GMT-0300 (ART)',
@@ -51,11 +70,31 @@ def development():
         venue='Universidad Nacional de Quilmes (UNQ)',
         owner=cpi,
         visibility=private,
-        gests=[arq1]
+        gests=[arq1],
+        requirement = [('d',5),('c',4)],
+        capacity = 5
     )
 
     event2.save()
 
+    assistance3 = Assistance(
+        event = event2.tag,
+        user = cpi,
+        requirement = [('d',1)]
+        )
+    
+    assistance3.save()
+
+    assistance4 = Assistance(
+        event = event2.tag,
+        user = arq1,
+        requirement = [('c',3),('d',2)]
+        )
+
+    assistance4.save()
+
 
 if __name__ == '__main__':
-    development()
+    #development()
+    evento = Event.query.get_by_tag("LollaAR")
+    evento.sumAssistanceRequirements() 
