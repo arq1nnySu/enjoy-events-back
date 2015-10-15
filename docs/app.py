@@ -65,3 +65,29 @@ class UserDocument(object):
 		parser.add_argument('password', type=str, required=True, help='Password needs to be defined', location='form')
 		return parser
 
+
+#Documentacion de las asistencias
+class AssistanceDocument(object):
+
+	def __init__(self, api):
+		self.api = api
+		self.requirement = self.create_requirement()
+		self.assistance = self.create_assistance()
+		self.assistances = self.create_assistances()
+
+	def create_requirement(self):
+		return self.api.model('Requirement', {
+			'name': fields.String(required=True, description='Event name'),
+			'quantity': fields.Integer(required=True, description='Name of event')
+			})
+
+	def create_assistance(self):
+		return self.api.model('Assistance', {
+			'event': fields.String(required=True, description='Event name'),
+			'requirements': fields.Nested(self.requirement, required=False, description='Requerimientos')
+			})
+
+	def create_assistances(self):
+		assistances = self.api.model('ListedAssistance', self.assistance)
+		return assistances
+

@@ -10,7 +10,7 @@ jwt = JWT(app)
 @jwt.authentication_handler
 def authenticate(username, password):
     log.info("Autenticar Usuario: {'username':'%s'}" % username)
-    db_user = User.query.get_by_name(username).first()
+    db_user = User.query.get_by_name(username)
     if db_user is not None and db_user.check_password(password):
         return db_user
     return None
@@ -19,7 +19,7 @@ def authenticate(username, password):
 @jwt.user_handler
 def load_user(payload):
     log.info("Cargar Usuario: {'username':'%s'}" % payload['username'])
-    return User.query.get_by_name(payload['username']).first()
+    return User.query.get_by_name(payload['username'])
 
 
 @jwt.payload_handler

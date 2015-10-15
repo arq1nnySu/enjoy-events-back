@@ -4,7 +4,7 @@ from flask.ext.restplus import Api, RestException
 from flask_cors import CORS
 from urlparse import urlsplit
 from flask.ext.mongoalchemy import MongoAlchemy
-from docs.app import UserDocument, EventDocument
+from docs.app import UserDocument, EventDocument, AssistanceDocument
 from datetime import timedelta
 from log.logger import getLogger
 log = getLogger()
@@ -59,6 +59,9 @@ EventDC = ed.event
 ErrorDC = ed.error
 
 EventsDC = ed.events
+ad = AssistanceDocument(api)
+AssistanceDC = ad.assistance
+AssistancesDC = ad.assistances
 
 event_parser = ed.parser
 

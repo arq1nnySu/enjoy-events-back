@@ -1,7 +1,7 @@
 from api import db, log
 from user import User
 from visibility import Visibility
-from assistance import Assistance
+from assistance import Assistance, Requirement
 from flask.ext.mongoalchemy import BaseQuery
 from itertools import groupby
 from operator import itemgetter
@@ -23,7 +23,7 @@ class Event(db.Document):
     owner = db.DocumentField(User)
     visibility = db.DocumentField(Visibility)
     gests = db.ListField(db.DocumentField(User))
-    requirements = db.ListField(db.TupleField(db.StringField(), db.IntField()))
+    requirement = db.ListField(db.DocumentField(Requirement))
     capacity = db.IntField()
 
     def hasAccess(self, user):
@@ -38,10 +38,11 @@ class Event(db.Document):
         log.info("Suma todos los requisitos que los usuarios se comprometieron a llevar al evento.")
         resultReq = [] 
         requirements = Assistance.query.get_requirements_by_event(self.tag)
-        keyfunc = itemgetter(0)
+        keyfunc = lambda r: r.name
         requirements.sort(key=keyfunc)
         for k, v in groupby(requirements,key=keyfunc):
-            resultReq.append((k, sum(r[1] for r in v)))
+            resultReq.append(Requirement(name=k, quantity=sum(r.quantity for r in v)))
+        print resultReq
         return resultReq
        
     def requirements(self, requirements):

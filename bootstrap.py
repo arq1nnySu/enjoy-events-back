@@ -1,6 +1,6 @@
 from model.event import Event
 from model.user import User
-from model.assistance import Assistance
+from model.assistance import Assistance, Requirement
 from model.visibility import Visibility
 
 
@@ -11,8 +11,9 @@ def remove(object):
 def development():
     map(remove, User.query.all())
     map(remove, Visibility.query.all())
-    map(remove, Assistance.query.all())
+    # map(remove, Assistance.query.all())
     map(remove, Event.query.all())
+    map(remove, Requirement.query.all())
 
     cpi = User(username='cpi', password='unq')
     cpi.generate_hashed_password()
@@ -39,7 +40,7 @@ def development():
         owner=cpi,
         visibility=public,
         gests=[],
-        requirements = [('a',7),('b',5)],
+        requirement = [Requirement(name='a', quantity=7),Requirement(name='b',quantity=5)],
         capacity = 10
     )
 
@@ -48,7 +49,7 @@ def development():
     assistance1 = Assistance(
         event = event.tag,
         user = cpi,
-        requirement = [('b',3),('a',1)]
+        requirements = [Requirement(name='b',quantity=3),Requirement(name='a',quantity=1)]
         )
 
     assistance1.save()
@@ -56,7 +57,7 @@ def development():
     assistance2 = Assistance(
         event = event.tag,
         user = arq1,
-        requirement = [('a',2),('b',1)]
+        requirements = [Requirement(name='a',quantity=2),Requirement(name='b',quantity=1)]
         )
     assistance2.save()
 
@@ -71,7 +72,7 @@ def development():
         owner=cpi,
         visibility=private,
         gests=[arq1],
-        requirement = [('d',5),('c',4)],
+        requirement = [Requirement(name='d',quantity=5),Requirement(name='c',quantity=4)],
         capacity = 5
     )
 
@@ -80,7 +81,7 @@ def development():
     assistance3 = Assistance(
         event = event2.tag,
         user = cpi,
-        requirement = [('d',1)]
+        requirements = [Requirement(name='d',quantity=1)]
         )
     
     assistance3.save()
@@ -88,13 +89,13 @@ def development():
     assistance4 = Assistance(
         event = event2.tag,
         user = arq1,
-        requirement = [('c',3),('d',2)]
+        requirements = [Requirement(name='c',quantity=3),Requirement(name='d',quantity=2)]
         )
 
     assistance4.save()
 
 
 if __name__ == '__main__':
-    #development()
+    # development()
     evento = Event.query.get_by_tag("LollaAR")
     evento.sumAssistanceRequirements() 
