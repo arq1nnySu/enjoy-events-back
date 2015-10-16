@@ -34,17 +34,16 @@ class Event(db.Document):
         log.info("Calcular la disponibilidad del Evento con: {'tag':'%s'}" % self.tag)
         return self.capicity - Assistance.query.get_amount_by_event(self.tag)
 
-    def sumAssistanceRequirements(self):
+    def lackRequirements(self):
         log.info("Suma todos los requisitos que los usuarios se comprometieron a llevar al evento.")
-        resultReq = [] 
+        lack = [] 
         requirements = Assistance.query.get_requirements_by_event(self.tag)
         keyfunc = lambda r: r.name
+
+        for req in requirements : req.quantity = -req.quantity
+        requirements += self.requirement
         requirements.sort(key=keyfunc)
-        for k, v in groupby(requirements,key=keyfunc):
-            resultReq.append(Requirement(name=k, quantity=sum(r.quantity for r in v)))
-        print resultReq
-        return resultReq
-       
-    def requirements(self, requirements):
-        resultReq = []
-       
+
+        for name, reqs in groupby(requirements,key=keyfunc):
+            lack.append(Requirement(name=name, quantity= sum(req.quantity for req in reqs)))
+        return lack
