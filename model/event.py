@@ -37,7 +37,7 @@ class Event(db.Document):
     def lackRequirements(self):
         log.info("Suma todos los requisitos que los usuarios se comprometieron a llevar al evento.")
         lack = [] 
-        requirements = Assistance.query.get_requirements_by_event(self.tag)
+        requirements = Assistance.query.get_requirements_by_event_tag(self.tag)
         keyfunc = lambda r: r.name
 
         for req in requirements : req.quantity = -req.quantity

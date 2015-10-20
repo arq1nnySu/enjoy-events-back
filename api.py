@@ -59,7 +59,7 @@ EventDC = ed.event
 ErrorDC = ed.error
 
 EventsDC = ed.events
-ad = AssistanceDocument(api)
+ad = AssistanceDocument(api, ed)
 AssistanceDC = ad.assistance
 AssistancesDC = ad.assistances
 

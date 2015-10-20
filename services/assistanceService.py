@@ -5,11 +5,11 @@ from model.user import User
 from services.jwtService import *
 from flask_jwt import jwt_required
 
-ns = api.namespace('assistance', description='Servicios para asistencias')
+ns = api.namespace('assistances', description='Servicios para asistencias')
 
 @ns.route('')
 class AssistanceService(Resource):
     @api.marshal_list_with(AssistancesDC)
-    # @jwt_required()
+    @jwt_required()
     def get(self):
-        return Assistance.query.get_by_user(User.query.get_by_name('cpi'))
+        return Assistance.query.get_by_user(currentUser())

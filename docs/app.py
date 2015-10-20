@@ -69,8 +69,9 @@ class UserDocument(object):
 #Documentacion de las asistencias
 class AssistanceDocument(object):
 
-	def __init__(self, api):
+	def __init__(self, api, eventDC):
 		self.api = api
+		self.eventDC = eventDC
 		self.requirement = self.create_requirement()
 		self.assistance = self.create_assistance()
 		self.assistances = self.create_assistances()
@@ -83,7 +84,7 @@ class AssistanceDocument(object):
 
 	def create_assistance(self):
 		return self.api.model('Assistance', {
-			'event': fields.String(required=True, description='Event name'),
+			'event': fields.Nested(self.eventDC.event, required=False, description='Evento'),
 			'requirements': fields.Nested(self.requirement, required=False, description='Requerimientos')
 			})
 

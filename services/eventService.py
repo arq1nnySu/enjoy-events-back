@@ -29,7 +29,7 @@ class EventService(Resource):
         eventToDelete.delete()
         return '', 204
 
-@ns.route('/')
+@ns.route('')
 @api.doc(responses={401: 'Authorization Required'})
 class EventListService(Resource):            
     @api.marshal_list_with(EventsDC)
