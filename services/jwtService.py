@@ -1,13 +1,10 @@
-from flask_jwt import JWT, _jwt, current_user, JWTError, verify_jwt
+from flask_jwt import JWT, _jwt, current_identity, JWTError, _jwt_required
 from flask import request, _request_ctx_stack
 from functools import wraps
 from api import app, api, log
 from model.user import User
 
-jwt = JWT(app)
 
-
-@jwt.authentication_handler
 def authenticate(username, password):
     log.info("Autenticar Usuario: {'username':'%s'}" % username)
     db_user = User.query.get_by_name(username)
@@ -16,13 +13,15 @@ def authenticate(username, password):
     return None
 
 
-@jwt.user_handler
-def load_user(payload):
+
+def identity(payload):
     log.info("Cargar Usuario: {'username':'%s'}" % payload['username'])
-    return User.query.get_by_name(payload['username'])
+    user = User.query.get_by_name(payload['username'])
+    return user
 
+jwt = JWT(app, authenticate, identity)
 
-@jwt.payload_handler
+@jwt.jwt_payload_handler
 def make_payload(user):
     return {'username': user.username}
 
@@ -45,14 +44,24 @@ def jwt_optional(realm=None):
 
     return wrapper
 
+def jwt_required(realm=None):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(*args, **kwargs):
+            _jwt_required(realm)
+            return fn(*args, **kwargs)
 
-@jwt.error_handler
+        return decorator
+
+    return wrapper
+
+@jwt.jwt_error_handler
 def error_handler(e):
     api.abort(401, "Authorization Required")
 
 
 def currentUser():
-    return _request_ctx_stack.top.current_user
+    return _request_ctx_stack.top.current_identity
 
 
 def isLogged():
@@ -61,6 +70,8 @@ def isLogged():
 
 def optional_jwt(realm=None):
     try:
-        verify_jwt(realm)
+        _jwt_required(realm)
     except JWTError:
-        _request_ctx_stack.top.current_user = None
+        _request_ctx_stack.top.current_identity = None
+
+

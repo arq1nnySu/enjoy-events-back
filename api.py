@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.debug = True
 # Configuracion de app.
 app.config['SECRET_KEY'] = 'super-secret'
-#app.config['RESTPLUS_VALIDATE'] = True
+app.config['JWT_REQUIRED_CLAIMS'] = []
 app.config['JWT_EXPIRATION_DELTA'] =  timedelta(hours=12)
 app.config['BUNDLE_ERRORS'] = True
 
@@ -66,7 +66,7 @@ AssistancesDC = ad.assistances
 event_parser = ed.parser
 
 ud = UserDocument(api)
-
+UsersDC = ud.users
 user_parser = ud.parser
 
 signup = ud.signup

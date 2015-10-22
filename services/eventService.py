@@ -38,7 +38,7 @@ class EventListService(Resource):
         log.info("Lista los Eventos. En estado Publico o Privado.")        
         if isLogged() :
             return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
-                Event.owner == currentUser()).or_(Event.gests.in_(currentUser()))
+                Event.owner == currentUser()).or_(Event.gests.in_(currentUser().username))
                 ).all()
         else:
             return Event.query.filter(Event.visibility == Visibility.query.public()).all()
@@ -56,7 +56,9 @@ class EventListService(Resource):
             time = args.time,
             date = args.date,
             image = args.image,
-            gests = [],
+            gests = args.gests,
+            requirement = [],
+            capacity = args.capacity,
             visibility = Visibility.query.get(args.visibility),
             owner = currentUser()
         )

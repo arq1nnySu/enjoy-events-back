@@ -22,13 +22,13 @@ class Event(db.Document):
     image = db.StringField()
     owner = db.DocumentField(User)
     visibility = db.DocumentField(Visibility)
-    gests = db.ListField(db.DocumentField(User))
+    gests = db.ListField(db.StringField())
     requirement = db.ListField(db.DocumentField(Requirement))
     capacity = db.IntField()
 
     def hasAccess(self, user):
-        log.info("Verificar acceso del Usuario: {'username':'%s'} al Evento con: {'tag':'%s'}" % (user.username, self.tag))
-        return self.visibility.isPublic() or self.owner == user or user in self.gests
+        log.info("Verificar acceso del Usuario: {'%s'} al Evento con: {'tag':'%s'}" % (user, self.tag))
+        return self.visibility.isPublic() or self.owner == user or user.username in self.gests
     
     def availability(self):
         log.info("Calcular la disponibilidad del Evento con: {'tag':'%s'}" % self.tag)
@@ -47,3 +47,10 @@ class Event(db.Document):
         for name, reqs in groupby(requirements,key=keyfunc):
             lack.append(Requirement(name=name, quantity= sum(req.quantity for req in reqs)))
         return lack
+
+    def addGest(self, user):
+        self.gests.append(user.username)
+    
+    def addGests(self, users):
+        self.gests.extend(map(lambda user: user.username))
+

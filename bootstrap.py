@@ -15,13 +15,18 @@ def development():
     map(remove, Event.query.all())
     map(remove, Requirement.query.all())
 
-    cpi = User(username='cpi', password='unq')
+    cpi = User(username='cpi', password='unq', email="cpi@unq.edu.ar", firstName="CPI", lastName="UNQ", phone="123456")
     cpi.generate_hashed_password()
     cpi.save()
 
-    arq1 = User(username='arq1', password='lds')
+    arq1 = User(username='arq1', password='lds', email="arq1@unq.edu.ar", firstName="ARQ1", lastName="UNQ", phone="123456")
     arq1.generate_hashed_password()
     arq1.save()
+
+    nny = User(username='nnydjesus', password='123', email="nnydjesus@gmail.com", firstName="Ronny", lastName="De Jesus", phone="123456")
+    nny.generate_hashed_password()
+    nny.save()
+
 
     public = Visibility(name='Public')
     public.save()
@@ -76,10 +81,12 @@ def development():
         venue='Universidad Nacional de Quilmes (UNQ)',
         owner=cpi,
         visibility=private,
-        gests=[arq1],
+        gests=[],
         requirement = [Requirement(name='d',quantity=5),Requirement(name='c',quantity=4)],
         capacity = 5
     )
+
+    event2.addGest(arq1)
 
     event2.save()
 
@@ -106,5 +113,5 @@ def development():
 
 if __name__ == '__main__':
     development()
-    evento = Event.query.get_by_tag("LollaAR")
-    evento.lackRequirements() 
+    # evento = Event.query.get_by_tag("LollaAR")
+    # evento.lackRequirements() 
