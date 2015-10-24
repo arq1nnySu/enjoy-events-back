@@ -23,14 +23,14 @@ jwt = JWT(app, authenticate, identity)
 
 @jwt.jwt_payload_handler
 def make_payload(user):
-    return {'username': user.username}
+    return {'username': user.username, 'email':user.email}
 
 
 def generate_token(user):
     log.info("Generar Token para un Usuario: {'user':'%s'}" % user)
-    payload = _jwt.payload_callback(user)
-    token = _jwt.encode_callback(payload)
-    return {'token': token}
+    payload = _jwt.jwt_payload_callback(user)
+    token = _jwt.jwt_encode_callback(user)
+    return {'access_token': token}
 
 
 def jwt_optional(realm=None):
