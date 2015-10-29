@@ -4,7 +4,7 @@ from flask.ext.restplus import Api, RestException
 from flask_cors import CORS
 from urlparse import urlsplit
 from flask.ext.mongoalchemy import MongoAlchemy
-from docs.app import UserDocument, EventDocument
+from docs.app import UserDocument, EventDocument, AssistanceDocument
 from datetime import timedelta
 from log.logger import getLogger
 log = getLogger()
@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.debug = True
 # Configuracion de app.
 app.config['SECRET_KEY'] = 'super-secret'
-#app.config['RESTPLUS_VALIDATE'] = True
+app.config['JWT_REQUIRED_CLAIMS'] = []
 app.config['JWT_EXPIRATION_DELTA'] =  timedelta(hours=12)
 app.config['BUNDLE_ERRORS'] = True
 
@@ -51,8 +51,6 @@ api = Api(app, version='1.0', title='API',
 #def handle_custom_exception(error):
 #    return {'message': 'What you want'}, 400
 
-EVENTS = {}
-
 ed = EventDocument(api)
 
 EventDC = ed.event
@@ -60,15 +58,21 @@ ErrorDC = ed.error
 
 EventsDC = ed.events
 
+ad = AssistanceDocument(api, ed)
+
+AssistanceDC = ad.assistance
+AssistancesDC = ad.assistances
+
+assistance_parser = ad.parser
+
 event_parser = ed.parser
 
 ud = UserDocument(api)
 
-user_parser = ud.parser
-
+UsersDC = ud.users
 signup = ud.signup
 
-
+user_parser = ud.parser
 
 @app.route('/bootstrap')
 def bootstrap():

@@ -1,9 +1,10 @@
-from api import api, EVENTS, EventsDC, EventDC, ErrorDC, event_parser, log
+from api import api, EventsDC, EventDC, ErrorDC, event_parser, log
 from flask.ext.restplus import Resource
 from model.event import Event
 from model.visibility import Visibility
+from model.assistance import Assistance
 from services.jwtService import *
-from flask_jwt import jwt_required
+from model.user import User
 
 ns = api.namespace('events', description='Servicios para eventos')
 
@@ -11,17 +12,21 @@ ns = api.namespace('events', description='Servicios para eventos')
 @api.doc(responses={404: 'Event not found', 401: 'Authorization Required'}, params={'tag': 'Tag\'s Event'})
 class EventService(Resource):
     @api.marshal_with(EventDC)
-    @jwt_optional()
+    @login_optional()
     def get(self, tag):
         log.info("Otorga el Evento con: {'tag':'%s'}" % tag)
         event = Event.query.get_by_tag(tag)
         if event.hasAccess(currentUser()) :
+            event.hasAssistance = False
+            if isLogged():
+                assistance = Assistance.query.get_by_eventTag_and_user(event, currentUser())
+                event.hasAssistance = assistance is not None
             return event
         else:
             log.warning("Se requiere Autorizacion para este recurso.")
             api.abort(401, "Authorization Required")
 
-    @jwt_required()
+    @login_required()
     @api.doc(responses={204: 'Event deleted'})
     def delete(self, tag):
         log.info("Elimina un Evento con: {'tag':'%s'}" % tag)
@@ -29,22 +34,22 @@ class EventService(Resource):
         eventToDelete.delete()
         return '', 204
 
-@ns.route('/')
+@ns.route('')
 @api.doc(responses={401: 'Authorization Required'})
 class EventListService(Resource):            
     @api.marshal_list_with(EventsDC)
-    @jwt_optional()
+    @login_optional()
     def get(self):
         log.info("Lista los Eventos. En estado Publico o Privado.")        
         if isLogged() :
             return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
-                Event.owner == currentUser()).or_(Event.gests.in_(currentUser()))
+                Event.owner == currentUser()).or_(Event.gests.in_(currentUser().username))
                 ).all()
         else:
             return Event.query.filter(Event.visibility == Visibility.query.public()).all()
 
     @api.doc(parser=event_parser)
-    @jwt_required()
+    @login_required()
     @api.marshal_with(EventDC, code=201)
     def post(self):
         args = event_parser.parse_args()
@@ -56,7 +61,9 @@ class EventListService(Resource):
             time = args.time,
             date = args.date,
             image = args.image,
-            gests = [],
+            gests = args.gests,
+            requirement = [],
+            capacity = args.capacity,
             visibility = Visibility.query.get(args.visibility),
             owner = currentUser()
         )
