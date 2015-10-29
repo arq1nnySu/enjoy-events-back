@@ -7,7 +7,7 @@ from services.jwtService import *
 
 ns = api.namespace('assistances', description='Servicios para asistencias')
 
-@ns.route('/')
+@ns.route('')
 class AssistanceService(Resource):
     @api.marshal_list_with(AssistancesDC)
     @login_required()

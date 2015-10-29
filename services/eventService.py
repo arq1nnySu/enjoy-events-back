@@ -2,7 +2,9 @@ from api import api, EventsDC, EventDC, ErrorDC, event_parser, log
 from flask.ext.restplus import Resource
 from model.event import Event
 from model.visibility import Visibility
+from model.assistance import Assistance
 from services.jwtService import *
+from model.user import User
 
 ns = api.namespace('events', description='Servicios para eventos')
 
@@ -15,6 +17,10 @@ class EventService(Resource):
         log.info("Otorga el Evento con: {'tag':'%s'}" % tag)
         event = Event.query.get_by_tag(tag)
         if event.hasAccess(currentUser()) :
+            event.hasAssistance = False
+            if isLogged():
+                assistance = Assistance.query.get_by_eventTag_and_user(event, currentUser())
+                event.hasAssistance = assistance is not None
             return event
         else:
             log.warning("Se requiere Autorizacion para este recurso.")
@@ -28,7 +34,7 @@ class EventService(Resource):
         eventToDelete.delete()
         return '', 204
 
-@ns.route('/')
+@ns.route('')
 @api.doc(responses={401: 'Authorization Required'})
 class EventListService(Resource):            
     @api.marshal_list_with(EventsDC)

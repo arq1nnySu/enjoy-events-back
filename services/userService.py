@@ -10,7 +10,7 @@ class UserService(Resource):
     @api.marshal_with(signup)
     @login_required()
     def get(self):
-        return User.query.get_by_name('cpi')
+        return currentUser()
 
     @api.doc(parser=user_parser)
     @login_required()

@@ -11,7 +11,7 @@ def remove(object):
 def development():
     map(remove, User.query.all())
     map(remove, Visibility.query.all())
-    # map(remove, Assistance.query.all())
+    map(remove, Assistance.query.all())
     map(remove, Event.query.all())
     map(remove, Requirement.query.all())
 

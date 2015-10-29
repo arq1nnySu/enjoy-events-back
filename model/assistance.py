@@ -20,6 +20,9 @@ class AssistanceQuery(BaseQuery):
 	def get_by_event(self, event):
 		return self.filter(self.type.event == event).all()
 
+	def get_by_eventTag_and_user(self, event, user):
+		return self.filter(self.type.eventTag == event.tag and self.type.user == user).first()
+
 	def get_by_user(self, user):
 		return self.filter(self.type.user == user).all()
 

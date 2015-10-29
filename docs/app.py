@@ -20,6 +20,7 @@ class EventDocument(object):
 			'venue': fields.String(required=True, description='Venue of event'),
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
+			'hasAssistance': fields.Boolean(required=False, description=''),
 			'gests': fields.List(fields.String(), required=True, description='Description of event')
 			})
 		return event
