@@ -51,27 +51,28 @@ api = Api(app, version='1.0', title='API',
 #def handle_custom_exception(error):
 #    return {'message': 'What you want'}, 400
 
-EVENTS = {}
-
 ed = EventDocument(api)
 
 EventDC = ed.event
 ErrorDC = ed.error
 
 EventsDC = ed.events
+
 ad = AssistanceDocument(api, ed)
+
 AssistanceDC = ad.assistance
 AssistancesDC = ad.assistances
+
+assistance_parser = ad.parser
 
 event_parser = ed.parser
 
 ud = UserDocument(api)
-UsersDC = ud.users
-user_parser = ud.parser
 
+UsersDC = ud.users
 signup = ud.signup
 
-
+user_parser = ud.parser
 
 @app.route('/bootstrap')
 def bootstrap():

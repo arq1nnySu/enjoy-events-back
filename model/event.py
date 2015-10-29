@@ -1,7 +1,7 @@
 from api import db, log
 from user import User
 from visibility import Visibility
-from assistance import Assistance, Requirement
+from assistance import Assistance, AssistanceEvent, Requirement
 from flask.ext.mongoalchemy import BaseQuery
 from itertools import groupby
 from operator import itemgetter
@@ -53,4 +53,9 @@ class Event(db.Document):
     
     def addGests(self, users):
         self.gests.extend(map(lambda user: user.username))
+
+    def getAppearanceAssistance(self):
+        appearance = AssistanceEvent(tag = self.tag, name = self.name, venue = self.venue, time = self.time, date = self.date, image = self.image)
+        return appearance
+
 

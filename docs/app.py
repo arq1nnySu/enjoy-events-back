@@ -91,6 +91,7 @@ class AssistanceDocument(object):
 		self.requirement = self.create_requirement()
 		self.assistance = self.create_assistance()
 		self.assistances = self.create_assistances()
+		self.parser = self.create_parser()
 
 	def create_requirement(self):
 		return self.api.model('Requirement', {
@@ -108,3 +109,8 @@ class AssistanceDocument(object):
 		assistances = self.api.model('ListedAssistance', self.assistance)
 		return assistances
 
+	def create_parser(self):
+		parser = RequestParser(bundle_errors=True)
+		parser.add_argument('event', type=str, required=True, help='Event needs to be defined', location='json')
+		parser.add_argument('requirements', type=str, required=False, help='Requirements (optional) needs to be defined', location='json')
+		return parser

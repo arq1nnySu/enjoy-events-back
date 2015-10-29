@@ -1,4 +1,4 @@
-from api import api, EVENTS, EventsDC, EventDC, ErrorDC, event_parser, log
+from api import api, EventsDC, EventDC, ErrorDC, event_parser, log
 from flask.ext.restplus import Resource
 from model.event import Event
 from model.visibility import Visibility
@@ -29,7 +29,7 @@ class EventService(Resource):
         eventToDelete.delete()
         return '', 204
 
-@ns.route('')
+@ns.route('/')
 @api.doc(responses={401: 'Authorization Required'})
 class EventListService(Resource):            
     @api.marshal_list_with(EventsDC)
