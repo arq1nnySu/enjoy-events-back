@@ -3,7 +3,6 @@ from flask.ext.restplus import Resource
 from model.event import Event
 from model.visibility import Visibility
 from services.jwtService import *
-from flask_jwt import jwt_required
 
 ns = api.namespace('events', description='Servicios para eventos')
 
@@ -11,7 +10,7 @@ ns = api.namespace('events', description='Servicios para eventos')
 @api.doc(responses={404: 'Event not found', 401: 'Authorization Required'}, params={'tag': 'Tag\'s Event'})
 class EventService(Resource):
     @api.marshal_with(EventDC)
-    @jwt_optional()
+    @login_optional()
     def get(self, tag):
         log.info("Otorga el Evento con: {'tag':'%s'}" % tag)
         event = Event.query.get_by_tag(tag)
@@ -21,7 +20,7 @@ class EventService(Resource):
             log.warning("Se requiere Autorizacion para este recurso.")
             api.abort(401, "Authorization Required")
 
-    @jwt_required()
+    @login_required()
     @api.doc(responses={204: 'Event deleted'})
     def delete(self, tag):
         log.info("Elimina un Evento con: {'tag':'%s'}" % tag)
@@ -33,7 +32,7 @@ class EventService(Resource):
 @api.doc(responses={401: 'Authorization Required'})
 class EventListService(Resource):            
     @api.marshal_list_with(EventsDC)
-    @jwt_optional()
+    @login_optional()
     def get(self):
         log.info("Lista los Eventos. En estado Publico o Privado.")        
         if isLogged() :
@@ -44,7 +43,7 @@ class EventListService(Resource):
             return Event.query.filter(Event.visibility == Visibility.query.public()).all()
 
     @api.doc(parser=event_parser)
-    @jwt_required()
+    @login_required()
     @api.marshal_with(EventDC, code=201)
     def post(self):
         args = event_parser.parse_args()

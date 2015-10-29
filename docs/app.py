@@ -70,7 +70,7 @@ class UserDocument(object):
 	def create_parser(self):
 		parser = RequestParser(bundle_errors=True)
 		parser.add_argument('username', type=str, required=True, help='Name needs to be defined', location='json')
-		parser.add_argument('password', type=str, required=True, help='Password needs to be defined', location='json')
+		parser.add_argument('password', type=str, required=False, help='Password needs to be defined', location='json')
 		parser.add_argument('email', type=str, required=True, help='Email needs to be defined', location='json')
 		parser.add_argument('firstName', type=str, required=False, location='json')
 		parser.add_argument('lastName', type=str, required=False, location='json')

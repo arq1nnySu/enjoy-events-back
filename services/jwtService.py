@@ -4,7 +4,6 @@ from functools import wraps
 from api import app, api, log
 from model.user import User
 
-
 def authenticate(username, password):
     log.info("Autenticar Usuario: {'username':'%s'}" % username)
     db_user = User.query.get_by_name(username)
@@ -33,7 +32,7 @@ def generate_token(user):
     return {'access_token': token}
 
 
-def jwt_optional(realm=None):
+def login_optional(realm=None):
     def wrapper(fn):
         @wraps(fn)
         def decorator(*args, **kwargs):
@@ -44,7 +43,7 @@ def jwt_optional(realm=None):
 
     return wrapper
 
-def jwt_required(realm=None):
+def login_required(realm=None):
     def wrapper(fn):
         @wraps(fn)
         def decorator(*args, **kwargs):
