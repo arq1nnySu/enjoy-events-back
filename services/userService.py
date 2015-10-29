@@ -1,16 +1,28 @@
 from flask.ext.restplus import Resource
 from api import api, signup, user_parser, log, UsersDC, app
-from services.jwtService import jwt, generate_token, jwt_required, currentUser
+from services.jwtService import jwt, generate_token, login_required, currentUser
 from model.user import User
 
 us = api.namespace('user', description='Servicios para usuario')
 
 @us.route('')
 class UserService(Resource):        
-    # @api.marshal_list_with(signup)
-    # @jwt.user_handler
-    # def get(self):
-    #     return User.query.get_by_name_and_password('cpi', 'unq').first()
+    @api.marshal_with(signup)
+    @login_required()
+    def get(self):
+        return User.query.get_by_name('cpi')
+
+    @api.doc(parser=user_parser)
+    @login_required()
+    def put(self):
+        args = user_parser.parse_args()
+        user = currentUser()
+        user.email = args.email
+        user.firstName = args.firstName
+        user.lastName = args.lastName
+        user.phone = args.phone
+        user.save()
+        return 201
 
     @api.doc(parser=user_parser)
     def post(self):
@@ -35,7 +47,7 @@ uss = api.namespace('users', description='Servicios para usuario')
 @uss.route('')
 class UsersService(Resource):
     @api.marshal_list_with(UsersDC)
-    @jwt_required()
+    @login_required()
     def get(self):
         return User.query.filter(User.username != currentUser().username).all()
 
