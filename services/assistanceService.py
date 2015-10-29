@@ -16,7 +16,7 @@ class AssistanceService(Resource):
 
     @api.doc(parser=assistance_parser)
     @api.marshal_with(AssistancesDC, code=201)
-    @jwt_required()
+    @login_required()
     def post(self):
         args = assistance_parser.parse_args()
         event = Event.query.get_by_tag(args.event)
