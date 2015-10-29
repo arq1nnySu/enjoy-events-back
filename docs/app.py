@@ -88,8 +88,8 @@ class AssistanceDocument(object):
 
 	def __init__(self, api, eventDC):
 		self.api = api
-		self.eventDC = eventDC
 		self.requirement = self.create_requirement()
+		self.assistanceEvent = self.create_assistanceEvent()
 		self.assistance = self.create_assistance()
 		self.assistances = self.create_assistances()
 		self.parser = self.create_parser()
@@ -102,8 +102,18 @@ class AssistanceDocument(object):
 
 	def create_assistance(self):
 		return self.api.model('Assistance', {
-			'event': fields.Nested(self.eventDC.event, required=False, description='Evento'),
+			'event': fields.Nested(self.assistanceEvent, required=False, description='Evento'),
 			'requirements': fields.Nested(self.requirement, required=False, description='Requerimientos')
+			})
+
+	def create_assistanceEvent(self):
+		return self.api.model('AssistanceEvent', {
+			'tag': fields.String(required=True, description='Event tag'),
+			'name': fields.String(required=True, description='Event name'),
+			'venue': fields.String(required=True, description='Event venue'),
+			'time': fields.String(required=True, description='Event time'),
+			'date': fields.String(required=True, description='Event date'),
+			'image': fields.String(required=True, description='Event image')
 			})
 
 	def create_assistances(self):
