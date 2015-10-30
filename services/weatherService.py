@@ -8,7 +8,7 @@ from services.jwtService import login_optional
 ws = api.namespace('weather', description='Servicios para el clima')
 
 # expires_after is seconds (7200 is 2 hours)
-requests_cache.install_cache(cache_name='demo_cache', expire_after=7200)
+requests_cache.install_cache(cache_name='demo_cache', backend='memory', expire_after=7200)
 
 
 @ws.route('')
