@@ -5,4 +5,5 @@ Flask-MongoAlchemy==0.7.2
 loggly-python-handler==1.0.0
 Werkzeug==0.10.4
 requests==2.8.1
+requests-cache==0.4.10
 newrelic
