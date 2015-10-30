@@ -16,5 +16,17 @@ requests_cache.install_cache(cache_name='demo_cache', backend='memory', expire_a
 class WeatherService(Resource):
     @login_optional()
     def get(self):
-        r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Bernal,ar&lang=es&appid=bd82977b86bf27fb59a04b61b657fb6f')
-        return r.json()
+        r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=Bernal, ar&mode=json&units=metric&cnt=1&appid=bd82977b86bf27fb59a04b61b657fb6f&lang=es')
+        response = r.json()
+        response["main"]
+        main= response["main"]
+        return {
+        	"coord": response["coord"],
+        	"weather": response["weather"][0], 
+        	"data": {
+        		"temperature": ('%2.0f' % main["temp"]),
+        		"pressure": main["pressure"],
+        		"humidity": main["humidity"],
+        		"wind": response["wind"]["speed"]
+        	}
+        }
