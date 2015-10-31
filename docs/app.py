@@ -125,3 +125,15 @@ class AssistanceDocument(object):
 		parser.add_argument('event', type=str, required=True, help='Event needs to be defined', location='json')
 		parser.add_argument('requirements', type=str, required=False, help='Requirements (optional) needs to be defined', location='json')
 		return parser
+
+
+# Documentacion de las asistencias
+class WatherDocument(object):
+	def __init__(self, api):
+		self.api = api
+		self.parser = self.create_parser()
+
+	def create_parser(self):
+		parser = self.api.parser()
+		parser.add_argument('q', type=str, help='Lugar')
+		return parser
