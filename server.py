@@ -3,6 +3,8 @@ from api import app
 import services.userService
 import services.eventService
 import services.assistanceService
+import services.venueService
+import services.weatherService
 
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 5000))

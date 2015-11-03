@@ -1,6 +1,7 @@
 from api import db, log
 from user import User
 from visibility import Visibility
+from model.venue import Venue
 from assistance import Assistance, AssistanceEvent, Requirement
 from flask.ext.mongoalchemy import BaseQuery
 from itertools import groupby
@@ -16,7 +17,7 @@ class Event(db.Document):
     tag = db.StringField()
     name = db.StringField()
     description = db.StringField()
-    venue = db.StringField()
+    venue = db.DocumentField(Venue)
     time = db.StringField()
     date = db.StringField()
     image = db.StringField()

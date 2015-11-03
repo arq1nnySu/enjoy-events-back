@@ -1,6 +1,7 @@
 from api import api, EventsDC, EventDC, ErrorDC, event_parser, log
 from flask.ext.restplus import Resource
 from model.event import Event
+from model.venue import Venue
 from model.visibility import Visibility
 from model.assistance import Assistance
 from services.jwtService import *
@@ -57,7 +58,7 @@ class EventListService(Resource):
             tag = args.tag,
             name = args.name,
             description = args.description,
-            venue = args.venue,
+            venue = Venue.query.get_by_name(args.venue),
             time = args.time,
             date = args.date,
             image = args.image,

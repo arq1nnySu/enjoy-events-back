@@ -4,7 +4,7 @@ from flask.ext.restplus import Api, RestException
 from flask_cors import CORS
 from urlparse import urlsplit
 from flask.ext.mongoalchemy import MongoAlchemy
-from docs.app import UserDocument, EventDocument, AssistanceDocument
+from docs.app import UserDocument, EventDocument, AssistanceDocument, WatherDocument, VenueDocument
 from datetime import timedelta
 from log.logger import getLogger
 log = getLogger()
@@ -73,6 +73,12 @@ UsersDC = ud.users
 signup = ud.signup
 
 user_parser = ud.parser
+
+wd = WatherDocument(api)
+wather_parser = wd.parser
+
+vd = VenueDocument(api)
+VenueDC = vd.venue
 
 @app.route('/bootstrap')
 def bootstrap():

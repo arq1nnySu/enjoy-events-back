@@ -6,6 +6,7 @@ class EventDocument(object):
 
 	def __init__(self, api):
 		self.api = api
+		self.venueDocument = VenueDocument(api)
 		self.event = self.create_event()
 		self.events = self.create_events()
 		self.parser = self.create_parser()
@@ -17,7 +18,7 @@ class EventDocument(object):
 			'name': fields.String(required=True, description='Name of event'),
 			'date': fields.String(required=True, description='Date of event'), # Cambiar el type por lo que corresponde.
 			'time': fields.String(required=True, description='Time of event'),
-			'venue': fields.String(required=True, description='Venue of event'),
+			'venue': fields.Nested(self.venueDocument.venue, required=True, description='Venue of event'),
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
@@ -48,6 +49,21 @@ class EventDocument(object):
 		parser.add_argument('gests', type=list, required=False, help='Gests of event', location='json'),
 		parser.add_argument('capacity', type=int, required=True, help='Capacity of event', location='json')
 		return parser
+
+class VenueDocument(object):
+
+	def __init__(self, api):
+		self.api = api
+		self.venue = self.create_venue()
+
+	def create_venue(self):
+		venue = self.api.model('Venue', {
+			'name': fields.String(required=True, description='Name of venue'),
+			'city': fields.String(required=True, description='City of venue'),
+			'street': fields.String(required=True, description='Street of venue'),
+			'country': fields.String(required=True, description='Country of venue'),
+			})
+		return venue
 
 #Documentacion de los usuarios
 class UserDocument(object):
@@ -88,6 +104,7 @@ class AssistanceDocument(object):
 
 	def __init__(self, api, eventDC):
 		self.api = api
+		self.venueDocument = VenueDocument(api)
 		self.requirement = self.create_requirement()
 		self.assistanceEvent = self.create_assistanceEvent()
 		self.assistance = self.create_assistance()
@@ -124,4 +141,16 @@ class AssistanceDocument(object):
 		parser = RequestParser(bundle_errors=True)
 		parser.add_argument('event', type=str, required=True, help='Event needs to be defined', location='json')
 		parser.add_argument('requirements', type=str, required=False, help='Requirements (optional) needs to be defined', location='json')
+		return parser
+
+
+# Documentacion de las asistencias
+class WatherDocument(object):
+	def __init__(self, api):
+		self.api = api
+		self.parser = self.create_parser()
+
+	def create_parser(self):
+		parser = self.api.parser()
+		parser.add_argument('event', type=str, help='Lugar')
 		return parser
