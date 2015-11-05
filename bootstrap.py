@@ -50,7 +50,7 @@ def development():
         owner=cpi,
         visibility=public,
         gests=[],
-        requirement = [Requirement(name='a', quantity=7),Requirement(name='b',quantity=5)],
+        requirement = [Requirement(name='Sandwich de milanesa', quantity=5),Requirement(name='Gaseosas',quantity=10)],
         capacity = 10
     )
 
@@ -63,24 +63,24 @@ def development():
         eventTag = assistanceEvent1.tag,
         event = assistanceEvent1,
         user = cpi,
-        requirements = [Requirement(name='b',quantity=3),Requirement(name='a',quantity=1)]
+        requirements = [Requirement(name='Sandwich de milanesa',quantity=3),Requirement(name='Gaseosas',quantity=1)]
         )
 
-    assistance1.save()
+    # assistance1.save()
 
     assistance2 = Assistance(
         eventTag = assistanceEvent1.tag,
         event = assistanceEvent1,
         user = arq1,
-        requirements = [Requirement(name='a',quantity=2),Requirement(name='b',quantity=1)]
+        requirements = [Requirement(name='Sandwich de milanesa',quantity=2),Requirement(name='Gaseosas',quantity=1)]
         )
-    assistance2.save()
+    # assistance2.save()
 
 
     unq = Venue(name="Universidad Nacional de Quilmes (UNQ)", street="Roque Saenz Pena 352", city="Bernal", country="Argentina")
     unq.save()
     event2 = Event(
-        date='2015-10-25',
+        date='2015-11-25',
         description='Choripateada de TPI',
         image='http://www.pasqualinonet.com.ar/images/Chorizos-765w%20007b.jpg',
         name='Choripateada 2015',
@@ -90,7 +90,7 @@ def development():
         owner=cpi,
         visibility=private,
         gests=[],
-        requirement = [Requirement(name='d',quantity=5),Requirement(name='c',quantity=4)],
+        requirement = [Requirement(name='Provoleta',quantity=5),Requirement(name='Alfajores Capitan del Espacio',quantity=10)],
         capacity = 5
     )
 
@@ -104,7 +104,7 @@ def development():
         eventTag = assistanceEvent2.tag,
         event = assistanceEvent2,
         user = cpi,
-        requirements = [Requirement(name='d',quantity=1)]
+        requirements = [Requirement(name='Provoleta',quantity=1)]
         )
     
     assistance3.save()
@@ -113,7 +113,7 @@ def development():
         eventTag = assistanceEvent2.tag,
         event = assistanceEvent2,
         user = arq1,
-        requirements = [Requirement(name='c',quantity=3),Requirement(name='d',quantity=2)]
+        requirements = [Requirement(name='Alfajores Capitan del Espacio',quantity=3),Requirement(name='Provoleta',quantity=2)]
         )
 
     assistance4.save()

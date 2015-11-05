@@ -26,7 +26,6 @@ class EventDocument(object):
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
-			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requirements'),
 			'gests': fields.List(fields.String(), required=True, description='Description of event'),
 			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing')
 			})
@@ -146,7 +145,7 @@ class AssistanceDocument(object):
 	def create_parser(self):
 		parser = RequestParser(bundle_errors=True)
 		parser.add_argument('event', type=str, required=True, help='Event needs to be defined', location='json')
-		parser.add_argument('requirements', type=str, required=False, help='Requirements (optional) needs to be defined', location='json')
+		parser.add_argument('requirements', type=list, required=False, help='Requirements (optional) needs to be defined', location='json')
 		return parser
 
 

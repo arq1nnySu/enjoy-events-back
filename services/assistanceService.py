@@ -1,6 +1,6 @@
 from flask.ext.restplus import Resource
 from api import api, AssistancesDC, log, assistance_parser
-from model.assistance import Assistance
+from model.assistance import Assistance, Requirement
 from model.user import User
 from model.event import Event
 from services.jwtService import *
@@ -24,7 +24,7 @@ class AssistanceService(Resource):
             eventTag = args.event,
             event = event.getAppearanceAssistance(),
             user = currentUser(),
-            requirements = args.requirements
+            requirements = map(lambda req: Requirement(name=req["name"],quantity=req["quantity"]), args.requirements)
         )
         newAssistance.save()
         log.info("Crea una Asistencia con: {'evento':'%s'}" % newAssistance.event)
