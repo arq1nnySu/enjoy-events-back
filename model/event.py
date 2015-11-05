@@ -56,7 +56,7 @@ class Event(db.Document):
         self.gests.extend(map(lambda user: user.username))
 
     def getAppearanceAssistance(self):
-        appearance = AssistanceEvent(tag = self.tag, name = self.name, venue = self.venue, time = self.time, date = self.date, image = self.image)
+        appearance = AssistanceEvent(tag = self.tag, name = self.name, venue = self.venue.name, time = self.time, date = self.date, image = self.image)
         return appearance
 
 

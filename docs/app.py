@@ -13,6 +13,10 @@ class EventDocument(object):
 		self.error = self.create_error()
 
 	def create_event(self):
+		requirement = self.api.model('Requirement', {
+			'name': fields.String(required=True, description='Event name'),
+			'quantity': fields.Integer(required=True, description='Name of event')
+			})
 		event = self.api.model('Event', {
 			'tag': fields.String(required=False, description='Tag of event'),
 			'name': fields.String(required=True, description='Name of event'),
@@ -22,7 +26,8 @@ class EventDocument(object):
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
-			'gests': fields.List(fields.String(), required=True, description='Description of event')
+			'gests': fields.List(fields.String(), required=True, description='Description of event'),
+			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing')
 			})
 		return event
 
@@ -140,7 +145,7 @@ class AssistanceDocument(object):
 	def create_parser(self):
 		parser = RequestParser(bundle_errors=True)
 		parser.add_argument('event', type=str, required=True, help='Event needs to be defined', location='json')
-		parser.add_argument('requirements', type=str, required=False, help='Requirements (optional) needs to be defined', location='json')
+		parser.add_argument('requirements', type=list, required=False, help='Requirements (optional) needs to be defined', location='json')
 		return parser
 
 

@@ -15,13 +15,16 @@ class AssistanceQuery(BaseQuery):
 	def get_requirements_by_event_tag(self, tag):
 		assistances = self.filter(self.type.eventTag == tag).fields("requirements").all()
 		requirements = map(lambda a: a.requirements, assistances)
-		return reduce(list.__add__, requirements)
+		if len(requirements) >0:
+			return reduce(list.__add__, requirements)
+		else:
+			return []
  
 	def get_by_event(self, event):
 		return self.filter(self.type.event == event).all()
 
 	def get_by_eventTag_and_user(self, event, user):
-		return self.filter(self.type.eventTag == event.tag and self.type.user == user).first()
+		return self.filter(self.type.eventTag == event.tag, self.type.user == user).first()
 
 	def get_by_user(self, user):
 		return self.filter(self.type.user == user).all()

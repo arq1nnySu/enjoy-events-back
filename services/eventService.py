@@ -22,6 +22,7 @@ class EventService(Resource):
             if isLogged():
                 assistance = Assistance.query.get_by_eventTag_and_user(event, currentUser())
                 event.hasAssistance = assistance is not None
+                event.requirementMissing = event.lackRequirements()
             return event
         else:
             log.warning("Se requiere Autorizacion para este recurso.")
