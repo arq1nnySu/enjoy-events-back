@@ -26,8 +26,9 @@ class EventDocument(object):
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
-			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requerimientos'),
-			'gests': fields.List(fields.String(), required=True, description='Description of event')
+			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requirements'),
+			'gests': fields.List(fields.String(), required=True, description='Description of event'),
+			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing')
 			})
 		return event
 

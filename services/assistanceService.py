@@ -24,7 +24,7 @@ class AssistanceService(Resource):
             eventTag = args.event,
             event = event.getAppearanceAssistance(),
             user = currentUser(),
-            requirements = []
+            requirements = args.requirements
         )
         newAssistance.save()
         log.info("Crea una Asistencia con: {'evento':'%s'}" % newAssistance.event)
