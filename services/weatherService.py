@@ -27,7 +27,7 @@ class WeatherService(Resource):
 
         if days <= 16 :
             place = "{0}, {1}, {2}".format(event.venue.street, event.venue.city, event.venue.country) 
-            r = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=${0}&mode=json&units=metric&cnt=${1}&appid=bd82977b86bf27fb59a04b61b657fb6f&lang=es'.format(place, days))
+            r = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=${0}&mode=json&units=metric&cnt=${1}&appid=5bb6740af88caf0f0825477ff473c661&lang=es'.format(place, days))
             response = r.json()
             data = response["list"][days-1]
             main = data["main"]
