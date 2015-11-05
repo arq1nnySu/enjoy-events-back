@@ -2,7 +2,7 @@ from flask.ext.restplus import Resource
 import requests
 import requests_cache
 from datetime import datetime
-from api import api, wather_parser
+from api import api, wather_parser, log
 from services.jwtService import login_optional
 from model.event import Event
 
@@ -25,23 +25,23 @@ class WeatherService(Resource):
         today = datetime.today()
         days = (eventDate - today).days
 
-        if days <= 16 :
-            place = "{0}, {1}, {2}".format(event.venue.street, event.venue.city, event.venue.country) 
+        if days <= 16:
+            place = "{0}, {1}, {2}".format(event.venue.street, event.venue.city, event.venue.country)
             r = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=${0}&mode=json&units=metric&cnt=${1}&appid=5bb6740af88caf0f0825477ff473c661&lang=es'.format(place, days))
-            response = r.json()
-            data = response["list"][days-1]
-            main = data["main"]
-            return {
-                "coord": response["city"]["coord"],
-                "weather": data["weather"][0],
-                "data": {
-                    "temperature": ('%2.0f' % main["temp"]),
-                    "pressure": main["pressure"],
-                    "humidity": main["humidity"],
-                    "wind": data["wind"]["speed"]
+
+            if 200 <= r.status_code < 300:
+                response = r.json()
+                data = response["list"][days-1]
+                main = data["main"]
+                return {
+                    "coord": response["city"]["coord"],
+                    "weather": data["weather"][0],
+                    "data": {
+                        "temperature": ('%2.0f' % main["temp"]),
+                        "pressure": main["pressure"],
+                        "humidity": main["humidity"],
+                        "wind": data["wind"]["speed"]
+                    }
                 }
-            }
-        else:
-            return {}
 
-
+        return {}
