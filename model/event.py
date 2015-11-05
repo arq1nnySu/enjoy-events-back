@@ -32,9 +32,8 @@ class Event(db.Document):
         return self.visibility.isPublic() or self.owner == user or user.username in self.gests
     
     def getRequirement_by_name(self, name): 
-        function = lambda req: req.name = name
-        result = filter(function,self.requirement)[0]
-        return    
+        function = lambda req: req.name == name
+        return filter(function,self.requirement)[0]
 
     def availability(self):
         log.info("Calcular la disponibilidad del Evento con: {'tag':'%s'}" % self.tag)
@@ -61,7 +60,7 @@ class Event(db.Document):
         self.gests.extend(map(lambda user: user.username))
 
     def getAppearanceAssistance(self):
-        appearance = AssistanceEvent(tag = self.tag, name = self.name, venue = self.venue, time = self.time, date = self.date, image = self.image)
+        appearance = AssistanceEvent(tag = self.tag, name = self.name, venue = self.venue.name, time = self.time, date = self.date, image = self.image)
         return appearance
 
 

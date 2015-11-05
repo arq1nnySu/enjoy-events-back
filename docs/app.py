@@ -13,6 +13,10 @@ class EventDocument(object):
 		self.error = self.create_error()
 
 	def create_event(self):
+		requirement = self.api.model('Requirement', {
+			'name': fields.String(required=True, description='Event name'),
+			'quantity': fields.Integer(required=True, description='Name of event')
+			})
 		event = self.api.model('Event', {
 			'tag': fields.String(required=False, description='Tag of event'),
 			'name': fields.String(required=True, description='Name of event'),
@@ -22,6 +26,7 @@ class EventDocument(object):
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
+			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requerimientos'),
 			'gests': fields.List(fields.String(), required=True, description='Description of event')
 			})
 		return event
