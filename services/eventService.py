@@ -64,7 +64,7 @@ class EventListService(Resource):
             date = args.date,
             image = args.image,
             gests = args.gests,
-            requirement = [],
+            requirement = map(lambda req: Requirement(name=req["name"],quantity=req["quantity"]), args.requirement),
             capacity = args.capacity,
             visibility = Visibility.query.get(args.visibility),
             owner = currentUser()
