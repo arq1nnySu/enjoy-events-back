@@ -74,3 +74,8 @@ def optional_jwt(realm=None):
         _request_ctx_stack.top.current_identity = None
 
 
+
+@app.route('/valid')
+@login_required()
+def valid():
+  return 'OK'

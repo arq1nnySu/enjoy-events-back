@@ -1,4 +1,4 @@
-flask-restplus==0.8.0
+git+https://github.com/noirbizarre/flask-restplus.git@master
 Flask-JWT==0.3.0
 Flask-Cors==2.1.0
 Flask-MongoAlchemy==0.7.2
