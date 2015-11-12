@@ -23,7 +23,7 @@ class AssistanceService(Resource):
         newAssistance = Assistance(
             eventTag = args.event,
             event = event.getAppearanceAssistance(),
-            user = currentUser(),
+            user = currentUser().username,
             requirements = map(lambda req: Requirement(name=req["name"],quantity=req["quantity"]), args.requirements)
         )
         newAssistance.save()

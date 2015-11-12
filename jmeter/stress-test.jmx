@@ -9,22 +9,22 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="NUMBER_USERS" elementType="Argument">
             <stringProp name="Argument.name">NUMBER_USERS</stringProp>
-            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.value">500</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="USERS_RAMPUP" elementType="Argument">
             <stringProp name="Argument.name">USERS_RAMPUP</stringProp>
-            <stringProp name="Argument.value">60</stringProp>
+            <stringProp name="Argument.value">250</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="WEBAPP_HOST" elementType="Argument">
             <stringProp name="Argument.name">WEBAPP_HOST</stringProp>
-            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.value">enjoy-events-portal.herokuapp.com</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="WEBAPP_PORT" elementType="Argument">
             <stringProp name="Argument.name">WEBAPP_PORT</stringProp>
-            <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.value">80</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="REPORTS_OUTPUT_FOLDER" elementType="Argument">
@@ -341,7 +341,7 @@ vars.put(&quot;token&quot;, at.access_token);
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">{&quot;time&quot;:&quot;&quot;,&quot;gests&quot;:[],&quot;tag&quot;:&quot;prueba-${random}&quot;,&quot;name&quot;:&quot;prueba&quot;,&quot;visibility&quot;:&quot;Private&quot;,&quot;description&quot;:&quot;dfdf&quot;,&quot;venue&quot;:&quot;Hipodromo de san isidro&quot;,&quot;capacity&quot;:&quot;10000&quot;,&quot;image&quot;:&quot;vxvcxv&quot;,&quot;date&quot;:&quot;2015-11-28&quot;}</stringProp>
+                      <stringProp name="Argument.value">{&quot;time&quot;:&quot;20:00&quot;,&quot;gests&quot;:[],&quot;tag&quot;:&quot;prueba-${random}&quot;,&quot;name&quot;:&quot;prueba&quot;,&quot;visibility&quot;:&quot;Public&quot;,&quot;description&quot;:&quot;:P&quot;,&quot;venue&quot;:&quot;Hipodromo de san isidro&quot;,&quot;capacity&quot;:&quot;10000&quot;,&quot;image&quot;:&quot;http://static.elobservador.com.uy/adjuntos/184/imagenes/000/296/0000296601.jpg&quot;,&quot;date&quot;:&quot;2015-12-01&quot;}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                     </elementProp>
                   </collectionProp>
