@@ -7,6 +7,7 @@ from flask.ext.mongoalchemy import MongoAlchemy
 from docs.app import UserDocument, EventDocument, AssistanceDocument, WatherDocument, VenueDocument
 from datetime import timedelta
 from log.logger import getLogger
+from services.MailService import MailService
 log = getLogger()
 
 app = Flask(__name__)
@@ -79,6 +80,8 @@ wather_parser = wd.parser
 
 vd = VenueDocument(api)
 VenueDC = vd.venue
+
+mailService = MailService(app)
 
 @app.route('/bootstrap')
 def bootstrap():

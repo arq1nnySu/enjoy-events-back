@@ -1,0 +1,39 @@
+<%include file="header.html"/>
+<tr>
+	<td style="padding:30px;">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tbody>
+				<tr>
+					<td style="font-family:Arial, Helvetica , sans-serif; padding-right:30px;"><h1
+						style="font-size:24px; font-weight:bold; display:block; padding:0; margin:0 0 10px 0;">Hola ${assistance.user}</h1>
+
+						<p style="font-size:16px; color:#585858">Gracias por elegir Enjoy-Events.</p>
+						<p> Esta es la confirmacion de tu asistencia.</p>
+					</td>
+					<td style="text-align:center"><img src="http://static.passto.com.ar/allaccessmail/img/ico_purchase_ok.png" width="150"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td style="padding:0px 30px;"><div style="height:2px; background:#e5e5e5"></div></td>
+</tr>
+<tr>
+	<td style="padding:30px;">
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tbody>
+				<tr>
+					<td style="padding-right:20px; vertical-align:top; font-family:Arial, Helvetica , sans-serif; font-size:13px; color:#361e40
+					; line-height:22px; ">
+					<h1 style=" font-size:20px; color:#361e40; margin:0 0 10px 0; padding:0; font-weight:bold;">${assistance.event.name}</h1>
+					<div>${assistance.event.venue}</div>
+					<div></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</td>
+<%include file="footer.html"/>
+

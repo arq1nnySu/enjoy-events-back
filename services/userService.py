@@ -1,5 +1,5 @@
 from flask.ext.restplus import Resource
-from api import api, signup, user_parser, log, UsersDC, app
+from api import api, signup, user_parser, log, UsersDC, app, mailService
 from services.jwtService import jwt, generate_token, login_required, currentUser
 from model.user import User
 
@@ -38,6 +38,7 @@ class UserService(Resource):
         #  no pude sobreescribir el save...
         user.generate_hashed_password()
         user.save()
+        mailService.createUser(user)
         log.info("Crea nuevo Usuario: {'username':'%s'}" % user.username)
         return generate_token(user), 201
 

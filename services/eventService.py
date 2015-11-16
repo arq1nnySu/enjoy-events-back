@@ -44,13 +44,13 @@ class EventListService(Resource):
     @login_optional()
     def get(self):
         log.info("Lista los Eventos. En estado Publico o Privado.")        
-        page = int(request.args.get('page', 1))
+        page = int(request.args.get('page', 0))
         if isLogged() :
             return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
                 Event.owner == currentUser()).or_(Event.gests.in_(currentUser().username))
-                ).paginate(page, 9).items
+                ).ascending(Event.date).paginate(page, 9).items
         else:
-            return Event.query.filter(Event.visibility == Visibility.query.public()).paginate(page, 9).items
+            return Event.query.filter(Event.visibility == Visibility.query.public()).ascending(Event.date).paginate(page, 9).items
 
     @api.doc(parser=event_parser)
     @login_required()
