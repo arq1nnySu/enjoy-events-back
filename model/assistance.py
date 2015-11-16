@@ -27,7 +27,7 @@ class AssistanceQuery(BaseQuery):
 		return self.filter(self.type.eventTag == event.tag, self.type.user == user.username).first()
 
 	def get_by_user(self, user):
-		return self.filter(self.type.user == user).all()
+		return self.filter(self.type.user == user.username).all()
 
 	def get_amount_by_event(self, event):
 		return self.filter(self.type.event == event).count()
