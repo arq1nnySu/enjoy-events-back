@@ -18,12 +18,15 @@ class EventService(Resource):
     def get(self, tag):
         log.info("Otorga el Evento con: {'tag':'%s'}" % tag)
         event = Event.query.get_by_tag(tag)
-        if event.hasAccess(currentUser()) :
-            event.hasAssistance = False
-            if isLogged():
-                assistance = Assistance.query.get_by_eventTag_and_user(event, currentUser())
+        event.hasAssistance = False
+        event.isOwner= False
+        if isLogged():
+            user = currentUser()
+            if event.hasAccess(user) :
+                assistance = Assistance.query.get_by_eventTag_and_user(event, user)
                 event.hasAssistance = assistance is not None
                 event.requirementMissing = event.lackRequirements()
+                event.isOwner = event.owner.username == user.username
             return event
         else:
             log.warning("Se requiere Autorizacion para este recurso.")
@@ -44,13 +47,13 @@ class EventListService(Resource):
     @login_optional()
     def get(self):
         log.info("Lista los Eventos. En estado Publico o Privado.")        
-        page = int(request.args.get('page', 0))
+        page = int(request.args.get('page', 1))
         if isLogged() :
             return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
                 Event.owner == currentUser()).or_(Event.gests.in_(currentUser().username))
-                ).ascending(Event.date).paginate(page, 9).items
+                ).ascending(Event.date).paginate(page, 15).items
         else:
-            return Event.query.filter(Event.visibility == Visibility.query.public()).ascending(Event.date).paginate(page, 9).items
+            return Event.query.filter(Event.visibility == Visibility.query.public()).ascending(Event.date).paginate(page, 15).items
 
     @api.doc(parser=event_parser)
     @login_required()
@@ -61,11 +64,11 @@ class EventListService(Resource):
             tag = args.tag,
             name = args.name,
             description = args.description,
-            venue = Venue.query.get_by_name(args.venue),
+            venue = Venue.query.get_by_name(args.venue["name"]),
             time = args.time,
             date = args.date,
             image = args.image,
-            gests = args.gests,
+            gests = map(lambda gest: gest["username"], args.gests),
             requirement = [],
             capacity = args.capacity,
             visibility = Visibility.query.get(args.visibility),
@@ -74,3 +77,24 @@ class EventListService(Resource):
         newEvent.save()
         log.info("Crea un Evento con: {'tag':'%s'}" % newEvent.tag)
         return newEvent, 201
+
+    @api.doc(parser=event_parser)
+    @login_required()
+    @api.marshal_with(EventDC, code=201)
+    def put(self):
+        args = event_parser.parse_args()
+        event = Event.query.get_by_tag(args.tag)
+        event.name = args.name
+        event.description = args.description
+        event.venue = Venue.query.get_by_name(args.venue["name"])
+        event.time = args.time
+        event.date = args.date
+        event.image = args.image
+        event.gests = map(lambda gest: gest["username"], args.gests)
+        event.requirement = []
+        event.capacity = args.capacity
+        event.visibility = Visibility.query.get(args.visibility["name"])
+
+        event.save()
+        log.info("Edita un Evento con: {'tag':'%s'}" % event.tag)
+        return event, 201

@@ -48,7 +48,7 @@ def development():
         tag='LollaAR',
         time='10:00',
         venue= hipodromo,
-        owner=cpi,
+        owner=nny,
         visibility=public,
         gests=[],
         requirement = [Requirement(name='Sandwich de milanesa', quantity=5),Requirement(name='Gaseosas',quantity=10)],
@@ -92,7 +92,7 @@ def development():
         venue=unq,
         owner=cpi,
         visibility=private,
-        gests=[],
+        gests=[nny.username],
         requirement = [Requirement(name='Provoleta',quantity=5),Requirement(name='Alfajores Capitan del Espacio',quantity=10)],
         capacity = 5
     )
