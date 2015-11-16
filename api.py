@@ -17,6 +17,7 @@ app.config['SECRET_KEY'] = 'super-secret'
 app.config['JWT_REQUIRED_CLAIMS'] = []
 app.config['JWT_EXPIRATION_DELTA'] =  timedelta(hours=12)
 app.config['BUNDLE_ERRORS'] = True
+app.config['SEND_EMAILS'] = True
 
 # Configuracion de MongoDB.
 url = os.environ.get('MONGOLAB_URI', 'mongodb://localhost/enjoy-events')
@@ -87,4 +88,15 @@ mailService = MailService(app)
 def bootstrap():
   from bootstrap import development
   development()
+  return 'OK'
+
+
+@app.route('/enableMails')
+def enableMails():
+  app.config['SEND_EMAILS'] = True
+  return 'OK'
+
+@app.route('/disableMails')
+def disableMails():
+  app.config['SEND_EMAILS'] = False
   return 'OK'

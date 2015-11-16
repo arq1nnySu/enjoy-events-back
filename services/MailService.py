@@ -38,8 +38,9 @@ class MailService():
 			def sendMessage(self, msg):
 				self.mail.send(msg)
 			
-			sender = threading.Thread(name='mailService', target=sendMessage, args=(self, msg))
-			sender.start()
+			if self.app.config['SEND_EMAILS']:
+				sender = threading.Thread(name='mailService', target=sendMessage, args=(self, msg))
+				sender.start()
 		except Exception as err:
 			print err
 
