@@ -1,3 +1,4 @@
+from flask.ext.restful.reqparse import RequestParser
 from api import api, EventsDC, EventDC, ErrorDC, event_parser, log
 from flask.ext.restplus import Resource
 from flask import request
@@ -39,6 +40,10 @@ class EventService(Resource):
         eventToDelete = Event.query.get_by_tag(tag)
         eventToDelete.delete()
         return '', 204
+
+
+removeEventParser = RequestParser(bundle_errors=True)
+removeEventParser.add_argument('tag', type=str, required=True, help='Tag of event', location='json')
 
 @ns.route('')
 @api.doc(responses={401: 'Authorization Required'})
@@ -98,3 +103,15 @@ class EventListService(Resource):
         event.save()
         log.info("Edita un Evento con: {'tag':'%s'}" % event.tag)
         return event, 201
+
+    @api.doc(parser=removeEventParser)
+    @login_required()
+    def delete(self):
+        args = removeEventParser.parse_args()
+        event = Event.query.get_by_tag(args.tag)
+
+        Assistance.query.removeFromEventTag(event.tag)
+
+        event.remove()
+        log.info("Elimina un Evento con: {'tag':'%s'}" % event.tag)
+        return {}, 201

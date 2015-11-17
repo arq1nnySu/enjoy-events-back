@@ -19,6 +19,9 @@ class AssistanceQuery(BaseQuery):
 			return reduce(list.__add__, requirements)
 		else:
 			return []
+
+	def removeFromEventTag(self, tag):
+		map(lambda a: a.remove(), self.filter(self.type.eventTag == tag).all())
  
 	def get_by_event(self, event):
 		return self.filter(self.type.event == event).all()
