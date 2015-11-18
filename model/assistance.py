@@ -27,13 +27,13 @@ class AssistanceQuery(BaseQuery):
 		return self.filter(self.type.event == event).all()
 
 	def get_by_eventTag_and_user(self, event, user):
-		return self.filter(self.type.eventTag == event.tag, self.type.user == user.username).first()
+		return self.filter(self.type.eventTag == event, self.type.user == user.username).first()
 
 	def get_by_user(self, user):
 		return self.filter(self.type.user == user.username).all()
 
 	def get_amount_by_event(self, event):
-		return self.filter(self.type.event == event).count()
+		return self.filter(self.type.eventTag == event).count()
 
 
 class AssistanceEvent(db.Document):

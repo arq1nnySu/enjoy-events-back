@@ -11,7 +11,7 @@ class VisibilityQuery(BaseQuery):
 
     def get(self, name):
         log.info("Busca la Visibilidad: %s de un Evento." % name)
-        return self.filter(self.type.name == name).first()
+        return self.filter(self.type.name == name).first_or_404()
 
 
 class Visibility(db.Document):
@@ -20,3 +20,6 @@ class Visibility(db.Document):
 
     def isPublic(self):
         return self.name == 'Public'
+
+    def __repr__(self):
+        return self.name

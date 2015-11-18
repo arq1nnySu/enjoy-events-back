@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class UserQuery(BaseQuery):
     def get_by_name(self, username):
         log.info("Busca un Usuario por nombre")
-        return self.filter(self.type.username == username).first()
+        return self.filter(self.type.username == username).first_or_404()
 
 
 class User(db.Document):

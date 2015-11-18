@@ -20,6 +20,9 @@ class AssistanceService(Resource):
     def post(self):
         args = assistance_parser.parse_args()
         event = Event.query.get_by_tag(args.event)
+        if not event.hasAvailability():
+            api.abort(400, "The event haven't availability")
+
         newAssistance = Assistance(
             eventTag = args.event,
             event = event.getAppearanceAssistance(),
@@ -30,3 +33,11 @@ class AssistanceService(Resource):
         mailService.assistance(newAssistance, currentUser())
         log.info("Crea una Asistencia con: {'evento':'%s'}" % newAssistance.event)
         return newAssistance, 201    
+
+    @api.doc(parser=assistance_parser)
+    @login_required()
+    def delete(self):
+        args = assistance_parser.parse_args()
+        assistance = Assistance.query.get_by_eventTag_and_user(args.event, currentUser())
+        assistance.remove()
+        return '', 204

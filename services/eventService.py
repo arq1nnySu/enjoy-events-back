@@ -21,10 +21,11 @@ class EventService(Resource):
         event = Event.query.get_by_tag(tag)
         event.hasAssistance = False
         event.isOwner= False
-        if isLogged():
-            user = currentUser()
-            if event.hasAccess(user) :
-                assistance = Assistance.query.get_by_eventTag_and_user(event, user)
+        user = currentUser()
+        event.soldOut = not event.hasAvailability()
+        if event.hasAccess(user) :
+            if isLogged():
+                assistance = Assistance.query.get_by_eventTag_and_user(event.tag, user)
                 event.hasAssistance = assistance is not None
                 event.requirementMissing = event.lackRequirements()
                 event.isOwner = event.owner.username == user.username
@@ -38,7 +39,7 @@ class EventService(Resource):
     def delete(self, tag):
         log.info("Elimina un Evento con: {'tag':'%s'}" % tag)
         eventToDelete = Event.query.get_by_tag(tag)
-        eventToDelete.delete()
+        eventToDelete.remove()
         return '', 204
 
 
@@ -79,7 +80,7 @@ class EventListService(Resource):
             visibility = Visibility.query.get(args.visibility),
             owner = currentUser()
         )
-        print newEvent.requirement
+        newEvent.save()
         log.info("Crea un Evento con: {'tag':'%s'}" % newEvent.tag)
         return newEvent, 201
 
@@ -98,7 +99,7 @@ class EventListService(Resource):
         event.gests = map(lambda gest: gest["username"], args.gests)
         event.requirement = map(lambda req: Requirement(name=req["name"],quantity=req["quantity"]), args.requirement)
         event.capacity = args.capacity
-        event.visibility = Visibility.query.get(args.visibility["name"])
+        event.visibility = Visibility.query.get(args.visibility)
         event.save()
         log.info("Edita un Evento con: {'tag':'%s'}" % event.tag)
         return event, 201

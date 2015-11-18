@@ -52,7 +52,7 @@ def development():
         visibility=public,
         gests=[],
         requirement = [Requirement(name='Sandwich de milanesa', quantity=5),Requirement(name='Gaseosas',quantity=10)],
-        capacity = 10
+        capacity = 1000
     )
 
     event.save()

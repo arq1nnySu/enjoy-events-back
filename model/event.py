@@ -10,7 +10,7 @@ from operator import itemgetter
 class EventQuery(BaseQuery):
     def get_by_tag(self, tag):
         log.info("Busca un Evento con: {'tag':%s}" % tag)
-        return self.filter(self.type.tag == tag).first()
+        return self.filter(self.type.tag == tag).first_or_404()
 
 class Event(db.Document):
     query_class = EventQuery
@@ -29,11 +29,14 @@ class Event(db.Document):
 
     def hasAccess(self, user):
         log.info("Verificar acceso del Usuario: {'%s'} al Evento con: {'tag':'%s'}" % (user, self.tag))
-        return self.visibility.isPublic() or self.owner == user or user.username in self.gests
+        return self.visibility.isPublic() or (user is not None and self.owner == user) or user.username in self.gests
+
+    def hasAvailability(self):
+        return self.availability() > 0
     
     def availability(self):
         log.info("Calcular la disponibilidad del Evento con: {'tag':'%s'}" % self.tag)
-        return self.capicity - Assistance.query.get_amount_by_event(self.tag)
+        return self.capacity - Assistance.query.get_amount_by_event(self.tag)
 
     def lackRequirements(self):
         log.info("Suma todos los requisitos que los usuarios se comprometieron a llevar al evento.")

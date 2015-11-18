@@ -37,10 +37,9 @@ class MailService():
 			@copy_current_request_context
 			def sendMessage(self, msg):
 				self.mail.send(msg)
-			
 			if self.app.config['SEND_EMAILS']:
 				sender = threading.Thread(name='mailService', target=sendMessage, args=(self, msg))
-				sender.start()
+				#sender.start()
 		except Exception as err:
 			print err
 

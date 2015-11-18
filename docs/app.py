@@ -17,9 +17,6 @@ class EventDocument(object):
 			'name': fields.String(required=True, description='Event name'),
 			'quantity': fields.Integer(required=True, description='Name of event')
 			})
-		visibility = self.api.model('Visibility', {
-			'name': fields.String(required=True, description='Visibility name'),
-			})
 		event = self.api.model('Event', {
 			'tag': fields.String(required=False, description='Tag of event'),
 			'name': fields.String(required=True, description='Name of event'),
@@ -29,9 +26,10 @@ class EventDocument(object):
 			'venue': fields.Nested(self.venueDocument.venue, required=True, description='Venue of event'),
 			'image': fields.String(required=True, description='Image of event'),
 			'description': fields.String(required=True, description='Description of event'),
-			'visibility': fields.Nested(visibility, required=True, description='Visibility of event'),
+			'visibility': fields.String(required=True, description='Visibility of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
 			'isOwner': fields.Boolean(required=False, description=''),
+			'soldOut': fields.Boolean(required=False, description=''),
 			'gests': fields.List(fields.String(), required=True, description='Description of event'),
 			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing'),
 			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requirements')
@@ -58,7 +56,7 @@ class EventDocument(object):
 		parser.add_argument('requirement', type=list, required=False, location='json')
 		parser.add_argument('image', type=str, required=True, help='Image needs to be defined', location='json')
 		parser.add_argument('description', type=str, required=False, help='Description of event', location='json')
-		parser.add_argument('visibility', type=dict, required=True, help='Visibility of event', location='json')
+		parser.add_argument('visibility', type=str, required=True, help='Visibility of event', location='json')
 		parser.add_argument('gests', type=list, required=False, help='Gests of event', location='json'),
 		parser.add_argument('capacity', type=int, required=True, help='Capacity of event', location='json')
 		return parser
