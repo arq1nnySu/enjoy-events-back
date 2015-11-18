@@ -33,7 +33,8 @@ class EventDocument(object):
 			'hasAssistance': fields.Boolean(required=False, description=''),
 			'isOwner': fields.Boolean(required=False, description=''),
 			'gests': fields.List(fields.String(), required=True, description='Description of event'),
-			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing')
+			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing'),
+			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requirements')
 			})
 		return event
 
@@ -54,6 +55,7 @@ class EventDocument(object):
 		parser.add_argument('date', type=str, required=True, help='Date needs to be defined', location='json') # Cambiar el type por lo que corresponde.
 		parser.add_argument('time', type=str, required=False, help='Time of event', location='json') # Cambiar el type por lo que corresponde.
 		parser.add_argument('venue', type=dict, required=True, help='Venue needs to be defined', location='json')
+		parser.add_argument('requirement', type=list, required=False, location='json')
 		parser.add_argument('image', type=str, required=True, help='Image needs to be defined', location='json')
 		parser.add_argument('description', type=str, required=False, help='Description of event', location='json')
 		parser.add_argument('visibility', type=dict, required=True, help='Visibility of event', location='json')

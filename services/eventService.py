@@ -5,7 +5,7 @@ from flask import request
 from model.event import Event
 from model.venue import Venue
 from model.visibility import Visibility
-from model.assistance import Assistance
+from model.assistance import Assistance, Requirement
 from services.jwtService import *
 from model.user import User
 
@@ -79,7 +79,7 @@ class EventListService(Resource):
             visibility = Visibility.query.get(args.visibility),
             owner = currentUser()
         )
-        newEvent.save()
+        print newEvent.requirement
         log.info("Crea un Evento con: {'tag':'%s'}" % newEvent.tag)
         return newEvent, 201
 
@@ -96,10 +96,9 @@ class EventListService(Resource):
         event.date = args.date
         event.image = args.image
         event.gests = map(lambda gest: gest["username"], args.gests)
-        event.requirement = []
+        event.requirement = map(lambda req: Requirement(name=req["name"],quantity=req["quantity"]), args.requirement)
         event.capacity = args.capacity
         event.visibility = Visibility.query.get(args.visibility["name"])
-
         event.save()
         log.info("Edita un Evento con: {'tag':'%s'}" % event.tag)
         return event, 201
