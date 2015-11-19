@@ -1,5 +1,5 @@
 from flask.ext.restful.reqparse import RequestParser
-from api import api, EventsDC, EventDC, ErrorDC, event_parser, log
+from api import api, EventsDC, EventDC, ErrorDC, event_parser, log, PaginateEventsDC
 from flask.ext.restplus import Resource
 from flask import request
 from model.event import Event
@@ -48,18 +48,20 @@ removeEventParser.add_argument('tag', type=str, required=True, help='Tag of even
 
 @ns.route('')
 @api.doc(responses={401: 'Authorization Required'})
-class EventListService(Resource):            
-    @api.marshal_list_with(EventsDC)
+class EventListService(Resource):    
+
+    def paginationResult(self, pagination):
+        return {"page":pagination.page, "totalPages":pagination.pages,  "events": pagination.items}
+
+    @api.marshal_list_with(PaginateEventsDC)
     @login_optional()
     def get(self):
         log.info("Lista los Eventos. En estado Publico o Privado.")        
         page = int(request.args.get('page', 1))
         if isLogged() :
-            return Event.query.filter((Event.visibility == Visibility.query.public()).or_(
-                Event.owner == currentUser()).or_(Event.gests.in_(currentUser().username))
-                ).ascending(Event.date).paginate(page, 15).items
+            return self.paginationResult(Event.query.getEventsPaginationForUser(page, currentUser()))
         else:
-            return Event.query.filter(Event.visibility == Visibility.query.public()).ascending(Event.date).paginate(page, 15).items
+            return self.paginationResult(Event.query.getPublicEventsPagination(page))
 
     @api.doc(parser=event_parser)
     @login_required()

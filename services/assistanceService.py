@@ -1,5 +1,5 @@
 from flask.ext.restplus import Resource
-from api import api, AssistancesDC, log, assistance_parser, mailService
+from api import api, AssistancesDC, log, assistance_parser, mailService, PaginateAssistancesDC
 from flask import request
 from model.assistance import Assistance, Requirement
 from model.user import User
@@ -46,7 +46,9 @@ class AssistanceService(Resource):
 
 @ass.route('/<string:event>')
 class AssistanceServices(Resource):
-    @api.marshal_list_with(AssistancesDC)
+    @api.marshal_with(PaginateAssistancesDC, code=201)
+    @login_required()
     def get(self, event):
         page = int(request.args.get('page', 1))
-        return Assistance.query.getByEventPaginate(event, page)
+        pagination = Assistance.query.getByEventPagination(event, page)
+        return {"page":page, "totalPages":pagination.pages,  "assistances": pagination.items}

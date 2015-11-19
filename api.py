@@ -57,6 +57,7 @@ ed = EventDocument(api)
 
 EventDC = ed.event
 ErrorDC = ed.error
+PaginateEventsDC = ed.paginateEvents
 
 EventsDC = ed.events
 
@@ -64,6 +65,7 @@ ad = AssistanceDocument(api, ed)
 
 AssistanceDC = ad.assistance
 AssistancesDC = ad.assistances
+PaginateAssistancesDC = ad.paginateAssistances
 
 assistance_parser = ad.parser
 

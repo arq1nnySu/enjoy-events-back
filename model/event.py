@@ -12,6 +12,14 @@ class EventQuery(BaseQuery):
         log.info("Busca un Evento con: {'tag':%s}" % tag)
         return self.filter(self.type.tag == tag).first_or_404()
 
+    def getPublicEventsPagination(self, page):
+        return self.filter(self.type.visibility == Visibility.query.public()).ascending(self.type.date).paginate(page, 15)
+
+    def getEventsPaginationForUser(self, page, user):
+        return self.filter((self.type.visibility == Visibility.query.public()).or_(
+                self.type.owner == user).or_(self.type.gests.in_(user.username))
+                ).ascending(self.type.date).paginate(page, 15)
+
 class Event(db.Document):
     query_class = EventQuery
     tag = db.StringField()

@@ -10,6 +10,7 @@ class EventDocument(object):
 		self.event = self.create_event()
 		self.events = self.create_events()
 		self.parser = self.create_parser()
+		self.paginateEvents = self.paginate_events()
 		self.error = self.create_error()
 
 	def create_event(self):
@@ -39,6 +40,13 @@ class EventDocument(object):
 	def create_events(self):
 		events = self.api.model('ListedTodo', self.event)
 		return events
+
+	def paginate_events(self):
+		return self.api.model('EventsAsistances', {
+			'page': fields.Integer(required=False),
+			'totalPages': fields.Integer(required=False),
+			'events': fields.List(fields.Nested(self.event, required=False))
+			})
 
 	def create_error(self):
 		error = self.api.model('Error', {
@@ -120,6 +128,7 @@ class AssistanceDocument(object):
 		self.assistanceEvent = self.create_assistanceEvent()
 		self.assistance = self.create_assistance()
 		self.assistances = self.create_assistances()
+		self.paginateAssistances = self.paginate_assistances()
 		self.parser = self.create_parser()
 
 	def create_requirement(self):
@@ -134,6 +143,14 @@ class AssistanceDocument(object):
 			'event': fields.Nested(self.assistanceEvent, required=False, description='Evento'),
 			'requirements': fields.Nested(self.requirement, required=False, description='Requerimientos')
 			})
+
+	def paginate_assistances(self):
+		return self.api.model('PaginateAsistances', {
+			'page': fields.Integer(required=False),
+			'totalPages': fields.Integer(required=False),
+			'assistances': fields.List(fields.Nested(self.assistance, required=False, description='Requerimientos'))
+			})
+
 
 	def create_assistanceEvent(self):
 		return self.api.model('AssistanceEvent', {
