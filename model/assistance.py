@@ -26,6 +26,9 @@ class AssistanceQuery(BaseQuery):
 	def get_by_event(self, event):
 		return self.filter(self.type.event == event).all()
 
+	def getByEventPaginate(self, event, page):
+		return self.filter(self.type.eventTag == event).paginate(page, 20).items
+
 	def get_by_eventTag_and_user(self, event, user):
 		return self.filter(self.type.eventTag == event, self.type.user == user.username).first()
 

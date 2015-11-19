@@ -130,6 +130,7 @@ class AssistanceDocument(object):
 
 	def create_assistance(self):
 		return self.api.model('Assistance', {
+			'user': fields.String(required=False, description='User'),
 			'event': fields.Nested(self.assistanceEvent, required=False, description='Evento'),
 			'requirements': fields.Nested(self.requirement, required=False, description='Requerimientos')
 			})
