@@ -23,15 +23,15 @@ class EventDocument(object):
 			'name': fields.String(required=True, description='Name of event'),
 			'date': fields.String(required=True, description='Date of event'), # Cambiar el type por lo que corresponde.
 			'time': fields.String(required=True, description='Time of event'),
-			'capacity': fields.String(required=True, description='Capacity of event'),
-			'venue': fields.Nested(self.venueDocument.venue, required=True, description='Venue of event'),
-			'image': fields.String(required=True, description='Image of event'),
-			'description': fields.String(required=True, description='Description of event'),
+			'capacity': fields.String(required=False, description='Capacity of event'),
+			'venue': fields.Nested(self.venueDocument.venue, required=False, description='Venue of event'),
+			'image': fields.String(required=False, description='Image of event'),
+			'description': fields.String(required=False, description='Description of event'),
 			'visibility': fields.String(required=True, description='Visibility of event'),
 			'hasAssistance': fields.Boolean(required=False, description=''),
 			'isOwner': fields.Boolean(required=False, description=''),
 			'soldOut': fields.Boolean(required=False, description=''),
-			'gests': fields.List(fields.String(), required=True, description='Description of event'),
+			'gests': fields.List(fields.String(), required=False, description='Description of event'),
 			'requirementMissing': fields.List(fields.Nested(requirement), required=False, description='Requirements missing'),
 			'requirement': fields.List(fields.Nested(requirement), required=False, description='Requirements')
 			})
