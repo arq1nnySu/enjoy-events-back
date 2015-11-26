@@ -22,7 +22,7 @@ class EventDocument(object):
 			'tag': fields.String(required=False, description='Tag of event'),
 			'name': fields.String(required=True, description='Name of event'),
 			'date': fields.String(required=True, description='Date of event'), # Cambiar el type por lo que corresponde.
-			'time': fields.String(required=True, description='Time of event'),
+			'time': fields.String(required=False, description='Time of event'),
 			'capacity': fields.String(required=False, description='Capacity of event'),
 			'venue': fields.Nested(self.venueDocument.venue, required=False, description='Venue of event'),
 			'image': fields.String(required=False, description='Image of event'),
